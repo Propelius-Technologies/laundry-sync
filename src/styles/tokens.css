@@ -1,0 +1,264 @@
+/*
+ * ============================================================================
+ * LaundrySync design tokens - the single source of truth for the visual system
+ * ============================================================================
+ *
+ * Imported once, by src/app/globals.css. Never import this file anywhere else.
+ *
+ * Two tiers, on purpose:
+ *
+ *   1. PRIMITIVES (@theme) - the raw approved brand values. Tailwind turns
+ *      each one into a utility class, so `--color-ls-navy` gives you
+ *      `bg-ls-navy` / `text-ls-navy`, `--text-h2` gives you `text-h2`, and so
+ *      on. These also exist as CSS custom properties on :root.
+ *
+ *   2. SEMANTICS (:root) - names that describe a ROLE rather than a value, and
+ *      that point at a primitive. Use these in hand-written CSS (CSS modules,
+ *      component stylesheets) and anywhere you want the intent to be obvious.
+ *
+ * Rules of thumb:
+ *   - In JSX, reach for the Tailwind utility (`text-ls-muted`).
+ *   - In CSS, reach for the semantic token (`var(--color-text-secondary)`).
+ *   - Never write a raw hex value in a component.
+ *   - Change a colour in ONE place: the primitive below.
+ *
+ * See docs/DESIGN_SYSTEM.md for the full guide.
+ */
+
+@theme {
+  /* ------------------------------------------------------------------ */
+  /* PRIMITIVES - brand palette                                          */
+  /* ------------------------------------------------------------------ */
+  --color-ls-ink: #0b2447; /* navy heading ink, sampled from the approved hero */
+  --color-ls-navy: #0b3d91; /* primary navy */
+  --color-ls-navy-700: #1543ab;
+  --color-ls-navy-600: #1d4ed8;
+  --color-ls-navy-500: #2563eb;
+  --color-ls-blue: #2563eb; /* primary blue */
+  --color-ls-blue-600: #1d4ed8;
+  --color-ls-aqua: #22d3ee; /* accent aqua */
+  /* Matches the cyan in the brand mark; used for the wordmark and small accents. */
+  --color-ls-cyan: #00b4ff;
+
+  /* Blue-to-aqua ramp for the highlighted headline. */
+  --color-ls-grad-from: #2f7ce6;
+  --color-ls-grad-mid: #3ba6ec;
+  --color-ls-grad-to: #3bcbe8;
+
+  /* ---------- Neutrals / surfaces ---------- */
+  --color-ls-text: #0f172a;
+  --color-ls-muted: #64748b;
+  --color-ls-muted-light: #94a3b8; /* de-emphasised icons in the greyscale rest state */
+  --color-ls-bg: #ffffff;
+  --color-ls-bg-soft: #f8fafc;
+  --color-ls-surface: #f8fafc;
+  --color-ls-subtle: #f1f5f9;
+  --color-ls-border: #e2e8f0;
+
+  /* ---------- Tints used for soft fills ---------- */
+  --color-ls-sky-50: #f5f9ff;
+  --color-ls-sky-100: #dbeafe;
+  --color-ls-sky-200: #bfdbfe;
+  --color-ls-aqua-50: #ecfdff;
+
+  /* ---------- Status ---------- */
+  --color-ls-success: #16a34a;
+  --color-ls-success-soft: #dcfce7;
+  --color-ls-success-ink: #14532d;
+  --color-ls-teal-ink: #0e7490; /* readable text on the aqua tint */
+
+  /* ---------- Device chassis (product mockups only) ---------- */
+  --color-ls-device-rail: #2b313b;
+  --color-ls-device-screen: #0b0e12;
+  --color-ls-device-lens: #1c2530;
+  --color-ls-device-foot: #98a0ae;
+  --color-ls-device-lens-lg: #565f6d;
+
+  /* ------------------------------------------------------------------ */
+  /* PRIMITIVES - typography scale                                       */
+  /* ------------------------------------------------------------------ */
+  --text-display: clamp(2.125rem, 0.75rem + 2.85vw, 3.5rem);
+  --text-display--line-height: 1.14;
+  --text-display--letter-spacing: -0.025em;
+  --text-display--font-weight: 700;
+
+  --text-statement: clamp(1.875rem, 1rem + 2.6vw, 3.25rem);
+  --text-statement--line-height: 1.16;
+  --text-statement--letter-spacing: -0.022em;
+  --text-statement--font-weight: 600;
+
+  --text-h2: clamp(1.75rem, 1.25rem + 2.1vw, 2.75rem);
+  --text-h2--line-height: 1.12;
+  --text-h2--letter-spacing: -0.028em;
+  --text-h2--font-weight: 700;
+
+  --text-h3: clamp(1.25rem, 1.1rem + 0.65vw, 1.5rem);
+  --text-h3--line-height: 1.25;
+  --text-h3--letter-spacing: -0.02em;
+  --text-h3--font-weight: 650;
+
+  --text-body-lg: clamp(1.0625rem, 1.01rem + 0.25vw, 1.1875rem);
+  --text-body-lg--line-height: 1.65;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.65;
+
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.6;
+
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.2;
+  --text-label--letter-spacing: 0.14em;
+  --text-label--font-weight: 600;
+
+  --text-button: 0.9375rem;
+  --text-button--line-height: 1;
+  --text-button--font-weight: 600;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.5;
+
+  /* ------------------------------------------------------------------ */
+  /* PRIMITIVES - layout                                                 */
+  /* ------------------------------------------------------------------ */
+  --container-site: 90rem; /* 1440px max content width */
+
+  /* ------------------------------------------------------------------ */
+  /* PRIMITIVES - shape                                                  */
+  /* ------------------------------------------------------------------ */
+  --radius-ls-sm: 0.5rem;
+  --radius-ls-md: 0.75rem;
+  --radius-ls-lg: 1rem;
+  --radius-ls-xl: 1.25rem;
+  --radius-ls-pill: 9999px;
+
+  /* ------------------------------------------------------------------ */
+  /* PRIMITIVES - elevation (restrained on purpose)                      */
+  /* ------------------------------------------------------------------ */
+  --shadow-ls-xs: 0 1px 2px rgb(11 36 71 / 0.06);
+  --shadow-ls-sm: 0 1px 2px rgb(11 36 71 / 0.05), 0 2px 8px -4px rgb(11 36 71 / 0.1);
+  --shadow-ls-card: 0 2px 4px -2px rgb(11 36 71 / 0.06), 0 12px 28px -14px rgb(11 36 71 / 0.22);
+  --shadow-ls-header: 0 4px 20px -12px rgb(11 36 71 / 0.28);
+  --shadow-ls-device: 0 8px 20px -12px rgb(11 36 71 / 0.18), 0 48px 80px -48px rgb(11 36 71 / 0.4);
+  --shadow-ls-cta: 0 1px 2px rgb(11 36 71 / 0.16), 0 10px 24px -12px rgb(18 87 203 / 0.55);
+
+  /* ------------------------------------------------------------------ */
+  /* PRIMITIVES - motion                                                 */
+  /* ------------------------------------------------------------------ */
+  --ease-ls-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-ls-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --duration-ls-fast: 150ms;
+  --duration-ls-normal: 250ms;
+  --duration-ls-slow: 500ms;
+}
+
+/*
+ * ====================================================================
+ * SEMANTIC LAYER
+ * Role-based aliases. Every value points at a primitive above - none of
+ * them introduce a new colour, size or shadow.
+ * ====================================================================
+ */
+:root {
+  /* ---------- Colour roles ---------- */
+  --color-brand-primary: var(--color-ls-navy);
+  --color-brand-primary-hover: var(--color-ls-navy-600);
+  --color-brand-blue: var(--color-ls-blue);
+  --color-brand-accent: var(--color-ls-aqua);
+  --color-brand-mark: var(--color-ls-cyan);
+
+  --color-text-heading: var(--color-ls-ink);
+  --color-text-primary: var(--color-ls-text);
+  --color-text-secondary: var(--color-ls-muted);
+  --color-text-tertiary: var(--color-ls-muted-light);
+  --color-text-on-brand: var(--color-ls-bg);
+
+  --color-background: var(--color-ls-bg);
+  --color-surface: var(--color-ls-surface);
+  --color-surface-sky: var(--color-ls-sky-100);
+  --color-border: var(--color-ls-border);
+
+  --color-success: var(--color-ls-success);
+  --color-focus-ring: var(--color-ls-navy-500);
+
+  /* ---------- Typography roles ---------- */
+  /* --font-sans is provided by Tailwind's theme, fed by next/font in layout. */
+  --font-family-base: var(--font-sans);
+
+  --font-size-display: var(--text-display);
+  --font-size-h2: var(--text-h2);
+  --font-size-h3: var(--text-h3);
+  --font-size-body-lg: var(--text-body-lg);
+  --font-size-body: var(--text-body);
+  --font-size-small: var(--text-body-sm);
+  --font-size-label: var(--text-label);
+  --font-size-caption: var(--text-caption);
+
+  --line-height-tight: 1.14;
+  --line-height-snug: 1.3;
+  --line-height-normal: 1.65;
+
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --letter-spacing-label: var(--text-label--letter-spacing);
+
+  /* ---------- Layout roles ---------- */
+  --layout-max-width: var(--container-site);
+  --layout-gutter: 1.25rem; /* px-5 */
+  --layout-header-height: 5rem; /* h-20 - the sticky header box, never changes */
+  /* The floating "pebble" bar the header collapses into once the page scrolls. */
+  --layout-header-pill-height: 4rem;
+  --layout-header-pill-width: 64rem;
+  --layout-section-y: 4rem;
+  --layout-section-y-compact: 1.25rem;
+
+  /* ---------- Shape roles ---------- */
+  --radius-button: var(--radius-ls-md);
+  --radius-card: var(--radius-ls-lg);
+  --radius-pill: var(--radius-ls-pill);
+
+  /* ---------- Elevation roles ---------- */
+  --shadow-subtle: var(--shadow-ls-sm);
+  --shadow-medium: var(--shadow-ls-card);
+
+  /* ---------- Device chassis gradients (product mockups only) ---------- */
+  --gradient-device-lid: linear-gradient(158deg, #454d5a 0%, #272c35 52%, #1b1f26 100%);
+  --gradient-device-base: linear-gradient(180deg, #e4e8ee 0%, #c3c9d3 46%, #959dab 100%);
+  --gradient-device-rail: linear-gradient(145deg, #5a626f 0%, #2c323c 26%, #1a1f26 62%, #3b424e 100%);
+
+  /* ---------- Motion roles ---------- */
+  --motion-fast: var(--duration-ls-fast);
+  --motion-normal: var(--duration-ls-normal);
+  --motion-slow: var(--duration-ls-slow);
+  --motion-ease: var(--ease-ls-out);
+
+  /*
+   * Time for the capabilities marquee to travel exactly one capability group.
+   * Larger = slower. Adding capabilities widens the group, so raise this to
+   * keep the same perceived speed. See docs/DESIGN_SYSTEM.md.
+   */
+  --motion-marquee-duration: 34s;
+}
+
+/*
+ * The gutter and header height step up at the same breakpoints the Container
+ * and Header components have always used (px-5 / sm:px-8 / lg:px-12 and
+ * h-20 / sm:h-22), so nothing about the approved layout changes - the values
+ * simply live here now instead of being scattered through class lists.
+ */
+@media (min-width: 40rem) {
+  :root {
+    --layout-gutter: 2rem; /* sm:px-8 */
+    --layout-header-height: 5.5rem; /* sm:h-22 */
+    --layout-header-pill-height: 4.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --layout-gutter: 3rem; /* lg:px-12 */
+  }
+}

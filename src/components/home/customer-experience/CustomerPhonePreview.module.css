@@ -1,0 +1,24 @@
+/*
+ * Decorative backdrop behind the phone: a thin circle with two partial arcs,
+ * turning slowly. Plain CSS rather than Motion - it is a single continuous
+ * transform that never needs to coordinate with React state.
+ */
+
+.backdrop {
+  animation: ls-spin 38s linear infinite;
+}
+
+@keyframes ls-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop {
+    animation: none;
+  }
+}

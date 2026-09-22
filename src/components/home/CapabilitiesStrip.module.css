@@ -1,0 +1,180 @@
+/*
+ * Capabilities marquee.
+ *
+ * The continuous movement, the hover pause and the reduced-motion fallback are
+ * all CSS - no JS, no timers. The track holds N identical copies of one
+ * capability group and slides left by exactly one group width (-100% / N of
+ * the track), so the frame after the last one is pixel-identical to the first:
+ * a seamless loop with no jump and no gap.
+ *
+ * (The section's entrance animation is separate and lives in the component,
+ * driven by Motion so it matches the hero.)
+ *
+ * Every value below comes from src/styles/tokens.css.
+ */
+
+.row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+@media (min-width: 48rem) {
+  .row {
+    flex-direction: row;
+    align-items: center;
+    gap: 2.5rem;
+  }
+}
+
+.label {
+  flex: none;
+}
+
+/*
+ * The moving region. `overflow: hidden` clips the repeats and guarantees the
+ * strip can never add horizontal page scroll; `min-width: 0` lets it shrink
+ * inside the flex row instead of pushing the label off-screen.
+ */
+.viewport {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  /* Items fade in and out at both edges rather than being cut off. */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 2rem,
+    #000 calc(100% - 2rem),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 2rem,
+    #000 calc(100% - 2rem),
+    transparent 100%
+  );
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: ls-marquee var(--motion-marquee-duration) linear infinite;
+}
+
+@keyframes ls-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* One full group. --ls-marquee-copies is set inline by the component. */
+    transform: translate3d(calc(-100% / var(--ls-marquee-copies)), 0, 0);
+  }
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/*
+ * Items rest in greyscale and only take brand colour under the pointer.
+ *
+ * Spacing is a trailing margin rather than `gap`, so the space after the last
+ * item of a group matches the space between items - otherwise the seam between
+ * two groups would be visibly tighter than the rest.
+ *
+ * The padding and radius are always present (with a transparent background),
+ * so the hover highlight cannot change an item's width and nudge the loop.
+ */
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-inline-end: 1.5rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  color: var(--color-text-secondary);
+  background-color: transparent;
+  transition:
+    color var(--motion-normal) var(--motion-ease),
+    background-color var(--motion-normal) var(--motion-ease);
+}
+
+@media (min-width: 48rem) {
+  .item {
+    margin-inline-end: 2.75rem;
+  }
+}
+
+.icon {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  color: var(--color-text-tertiary);
+  transition: color var(--motion-normal) var(--motion-ease);
+}
+
+/*
+ * Hovering any single item stops the whole strip, and highlights only the item
+ * under the pointer. `animation-play-state` resumes from the paused offset, so
+ * the loop continues rather than restarting.
+ *
+ * :focus-within is here for the day these items become links - today they are
+ * informational text with no tab stop, so it never fires.
+ */
+.viewport:has(.item:hover) .track,
+.viewport:focus-within .track {
+  animation-play-state: paused;
+}
+
+.item:hover,
+.item:focus-visible {
+  color: var(--color-brand-blue);
+  background-color: var(--color-ls-sky-50);
+}
+
+.item:hover .icon,
+.item:focus-visible .icon {
+  color: var(--color-brand-mark);
+}
+
+/*
+ * Reduced motion: stop the movement and show one static, wrapping row. The
+ * duplicate groups are hidden so nothing is read twice, and no capability is
+ * lost - every one stays visible and readable.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .viewport {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .track {
+    width: 100%;
+    animation: none;
+    flex-wrap: wrap;
+  }
+
+  .group {
+    flex-wrap: wrap;
+    row-gap: 0.75rem;
+  }
+
+  .group[aria-hidden="true"] {
+    display: none;
+  }
+}

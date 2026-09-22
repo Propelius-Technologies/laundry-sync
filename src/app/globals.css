@@ -1,26 +1,171 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: var(--font-family-base);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Anchor targets clear the sticky header. */
+  :target,
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+
+  strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-heading);
+  }
+
+  ::selection {
+    background-color: var(--color-ls-sky-200);
+    color: var(--color-text-heading);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* ---------------- Typography ---------------- */
+  .ls-display {
+    font-size: var(--text-display);
+    line-height: var(--text-display--line-height);
+    letter-spacing: var(--text-display--letter-spacing);
+    font-weight: var(--text-display--font-weight);
+    color: var(--color-text-heading);
+  }
+
+  .ls-statement {
+    font-size: var(--text-statement);
+    line-height: var(--text-statement--line-height);
+    letter-spacing: var(--text-statement--letter-spacing);
+    font-weight: var(--text-statement--font-weight);
+    color: var(--color-text-heading);
+  }
+
+  .ls-h2 {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+    font-weight: var(--text-h2--font-weight);
+    color: var(--color-text-heading);
+  }
+
+  .ls-h3 {
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    letter-spacing: var(--text-h3--letter-spacing);
+    font-weight: var(--text-h3--font-weight);
+    color: var(--color-text-heading);
+  }
+
+  .ls-body-lg {
+    font-size: var(--text-body-lg);
+    line-height: var(--text-body-lg--line-height);
+    color: var(--color-text-secondary);
+  }
+
+  .ls-body {
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    color: var(--color-text-secondary);
+  }
+
+  .ls-body-sm {
+    font-size: var(--text-body-sm);
+    line-height: var(--text-body-sm--line-height);
+    color: var(--color-text-secondary);
+  }
+
+  .ls-label {
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    letter-spacing: var(--text-label--letter-spacing);
+    font-weight: var(--text-label--font-weight);
+    text-transform: uppercase;
+  }
+
+  .ls-caption {
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    color: var(--color-text-secondary);
+  }
+
+  /* Restrained blue-to-aqua headline treatment. */
+  .ls-text-gradient {
+    color: var(--color-ls-grad-mid);
+  }
+
+  @supports (background-clip: text) or (-webkit-background-clip: text) {
+    .ls-text-gradient {
+      background-image: linear-gradient(
+        98deg,
+        var(--color-ls-grad-from) 0%,
+        var(--color-ls-grad-mid) 48%,
+        var(--color-ls-grad-to) 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+  }
+}
+
+@layer utilities {
+  /*
+   * Device screen scales.
+   * The mock product UIs are laid out with container-query units so a single
+   * markup tree stays legible from a 95px phone screen to a 640px laptop
+   * screen without any fixed pixel dimensions. The clamp() floors keep text
+   * above the "microscopic" threshold on small viewports; container queries in
+   * the screen components drop columns instead of shrinking type further.
+   */
+  .ls-screen {
+    container-type: inline-size;
+  }
+
+  .ls-screen-laptop {
+    --ui-2xs: clamp(6px, 1.25cqw, 12px);
+    --ui-xs: clamp(7px, 1.45cqw, 14px);
+    --ui-sm: clamp(8px, 1.7cqw, 16px);
+    --ui-md: clamp(9px, 2cqw, 19px);
+    --ui-lg: clamp(13px, 3.1cqw, 30px);
+    --ui-gap: clamp(3px, 1.2cqw, 12px);
+    --ui-pad: clamp(6px, 2.2cqw, 22px);
+    --ui-r: clamp(3px, 0.9cqw, 9px);
+  }
+
+  .ls-screen-phone {
+    --ui-2xs: clamp(5.5px, 4cqw, 11px);
+    --ui-xs: clamp(6.5px, 4.8cqw, 12.5px);
+    --ui-sm: clamp(7.5px, 5.6cqw, 14px);
+    --ui-md: clamp(8.5px, 6.5cqw, 16px);
+    --ui-lg: clamp(11px, 8.4cqw, 21px);
+    --ui-gap: clamp(3px, 3cqw, 9px);
+    --ui-pad: clamp(6px, 6cqw, 16px);
+    --ui-r: clamp(4px, 3.2cqw, 10px);
+  }
 }
