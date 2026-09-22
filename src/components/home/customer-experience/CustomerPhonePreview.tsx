@@ -14,7 +14,11 @@ import {
   previewDescriptions,
   type PreviewScreen,
 } from "@/data/customer-journey";
-import { duration, easeOut } from "@/components/motion/motion-tokens";
+import {
+  duration,
+  easeInOut,
+  easeOut,
+} from "@/components/motion/motion-tokens";
 import styles from "./CustomerPhonePreview.module.css";
 
 const screens: Record<PreviewScreen, () => React.JSX.Element> = {
@@ -27,7 +31,7 @@ const screens: Record<PreviewScreen, () => React.JSX.Element> = {
   history: OrderHistoryPreview,
 };
 
-/** True only for devices that really hover, so touch never gets the tilt. */
+/** True only for devices that really hover, so touch never gets the nudge. */
 function useHasHover() {
   const [hasHover, setHasHover] = useState(false);
 
@@ -46,7 +50,7 @@ function useHasHover() {
  * The phone and its backdrop.
  *
  * Three transforms are kept on separate wrappers so they never fight: the
- * outer element owns the scroll entrance, the middle one owns the hover tilt,
+ * outer element owns the scroll entrance, the middle one owns the hover nudge,
  * and the screen inside the frame owns the crossfade. The frame itself is
  * never remounted, so switching screens leaves the device perfectly still.
  */
@@ -54,7 +58,7 @@ export function CustomerPhonePreview({ screen }: { screen: PreviewScreen }) {
   const reduceMotion = useReducedMotion();
   const hasHover = useHasHover();
   const Screen = screens[screen];
-  const tiltEnabled = hasHover && !reduceMotion;
+  const nudgeEnabled = hasHover && !reduceMotion;
 
   return (
     <motion.div
@@ -64,51 +68,75 @@ export function CustomerPhonePreview({ screen }: { screen: PreviewScreen }) {
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: duration.slow, ease: easeOut, delay: 0.1 }}
     >
-      {/* Rotating backdrop - hidden on narrow screens where it only adds noise */}
+      {/*
+        Rotating backdrop. Sized by WIDTH (never taller than it is wide) so it
+        can never spill past the column and add horizontal page scroll, and
+        centred on the phone so the ring sits evenly around it.
+      */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 hidden items-center justify-center sm:flex"
       >
         <svg
           viewBox="0 0 200 200"
-          className={`${styles.backdrop} h-[78%] max-h-[420px] w-auto opacity-70`}
+          className={`${styles.backdrop} aspect-square w-full`}
           fill="none"
         >
+          {/* Pale halo behind the device */}
           <circle
             cx="100"
             cy="100"
-            r="96"
+            r="78"
+            fill="var(--color-ls-sky-100)"
+            fillOpacity="0.45"
+          />
+          {/* Hairline outline */}
+          <circle
+            cx="100"
+            cy="100"
+            r="99"
             stroke="var(--color-ls-sky-200)"
             strokeWidth="0.6"
           />
-          <circle cx="100" cy="100" r="72" fill="var(--color-ls-sky-50)" />
-          <path
-            d="M100 4a96 96 0 0 1 82 48"
+          {/*
+            Two opposing arcs on the outline, drawn with a normalised
+            pathLength so the dash lengths read as exact percentages of the
+            circumference rather than hand-guessed path coordinates.
+          */}
+          <circle
+            cx="100"
+            cy="100"
+            r="99"
+            pathLength="100"
+            strokeDasharray="13 87"
             stroke="var(--color-ls-aqua)"
-            strokeWidth="1.2"
+            strokeWidth="1.3"
             strokeLinecap="round"
-            opacity="0.5"
           />
-          <path
-            d="M18 148a96 96 0 0 0 52 40"
+          <circle
+            cx="100"
+            cy="100"
+            r="99"
+            pathLength="100"
+            strokeDasharray="7 93"
+            strokeDashoffset="-50"
             stroke="var(--color-ls-blue)"
-            strokeWidth="1.2"
+            strokeWidth="1.3"
             strokeLinecap="round"
-            opacity="0.35"
+            opacity="0.55"
           />
         </svg>
       </div>
 
       {/*
-        Tilt wrapper. The perspective lives on this plain parent - a 3D
-        rotation is only perspective-corrected by an ANCESTOR's perspective,
-        so putting it on the rotating element itself renders flat.
+        The phone. Hovering gives it a small rotation that settles straight
+        back to rest - a nudge rather than a held tilt, so the screen never
+        sits skewed while it is being read.
       */}
-      <div className="relative w-full max-w-[292px] [perspective:1200px]">
+      <div className="relative w-full max-w-[292px]">
         <motion.div
-          whileHover={tiltEnabled ? { rotateY: -3.5, rotateX: 1.5 } : undefined}
-          transition={{ duration: 0.45, ease: easeOut }}
-          style={{ transformStyle: "preserve-3d" }}
+          whileHover={nudgeEnabled ? { rotate: [0, -1.6, 0] } : undefined}
+          transition={{ duration: 0.75, ease: easeInOut }}
         >
           <div role="img" aria-label={previewDescriptions[screen]}>
             <MobileMockup>
