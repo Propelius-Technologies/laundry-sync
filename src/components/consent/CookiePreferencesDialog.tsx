@@ -6,6 +6,7 @@ import { useConsent } from "./ConsentProvider";
 import { Close } from "@/components/ui/Icons";
 import { analyticsConfigured } from "@/lib/consent/consent-config";
 import { cn } from "@/lib/utils";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 const actionClass = cn(
   "inline-flex min-h-11 items-center justify-center rounded-ls-md px-4 text-body-sm font-semibold",
@@ -37,6 +38,13 @@ export function CookiePreferencesDialog() {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [draftAnalytics, setDraftAnalytics] = useState(categories.analytics);
 
+  /*
+   * showModal() blocks document scrolling in most browsers, but not
+   * consistently, and it does not stop Lenis reading wheel events. Pausing it
+   * explicitly keeps the page behind the dialog still everywhere.
+   */
+  useScrollLock(preferencesOpen);
+
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
@@ -62,7 +70,11 @@ export function CookiePreferencesDialog() {
         "backdrop:bg-ls-ink/50",
       )}
     >
-      <div className="max-h-[80vh] overflow-y-auto p-6 sm:p-7">
+      {/* data-lenis-prevent: this panel scrolls natively, not through Lenis */}
+      <div
+        data-lenis-prevent
+        className="max-h-[80vh] overflow-y-auto p-6 sm:p-7"
+      >
         <div className="flex items-start justify-between gap-4">
           <h2 id="cookie-prefs-title" className="ls-h3 text-lg">
             Cookie preferences

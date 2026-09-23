@@ -7,6 +7,7 @@ import { NavLink } from "@/components/ui/NavLink";
 import { ArrowUpRight } from "@/components/ui/Icons";
 import { headerCta, mainNav } from "@/data/navigation";
 import { duration, easeOut } from "@/components/motion/motion-tokens";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 type MobileMenuProps = {
   open: boolean;
@@ -65,15 +66,12 @@ export function MobileMenu({ open, onClose, triggerRef, id }: MobileMenuProps) {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [open, close]);
 
-  // Prevent the page behind the sheet from scrolling.
-  useEffect(() => {
-    if (!open) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previous;
-    };
-  }, [open]);
+  /*
+   * Prevent the page behind the sheet from scrolling. Shared hook because the
+   * body rule alone no longer suffices - smooth scrolling drives
+   * window.scrollTo from wheel events and has to be paused as well.
+   */
+  useScrollLock(open);
 
   // Move focus into the panel on open, and back to the trigger on close.
   useEffect(() => {

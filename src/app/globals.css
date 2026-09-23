@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "../styles/tokens.css";
+/* Lenis's own rules: root height, stopped state, nested-scroll opt-outs. */
+@import "lenis/dist/lenis.css";
 
 @layer base {
   :root {
@@ -8,7 +10,21 @@
 
   html {
     -webkit-text-size-adjust: 100%;
+    /*
+     * Native smooth scrolling, used when JavaScript has not run or Lenis is
+     * not active. It is the fallback, not the main mechanism.
+     */
     scroll-behavior: smooth;
+  }
+
+  /*
+   * Lenis adds .lenis to <html> once it takes over. Native smooth scrolling
+   * must then be off: two easing engines driving the same scroll position
+   * fight each other, which shows up as anchor jumps that stutter or never
+   * settle. Lenis's own stylesheet does not do this, so it is set here.
+   */
+  html.lenis {
+    scroll-behavior: auto;
   }
 
   body {

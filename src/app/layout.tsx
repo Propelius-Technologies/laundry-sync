@@ -11,6 +11,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MotionProvider } from "@/components/motion/MotionProvider";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { ConsentProvider } from "@/components/consent/ConsentProvider";
 import { CookieBanner } from "@/components/consent/CookieBanner";
 import { CookiePreferencesDialog } from "@/components/consent/CookiePreferencesDialog";
@@ -103,16 +104,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </noscript>
         <JsonLd />
         <MotionProvider>
-          <ConsentProvider>
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
+          <SmoothScroll>
+            <ConsentProvider>
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
 
-            {/* Consent shell - rendered once, available on every route */}
-            <CookieBanner />
-            <CookiePreferencesDialog />
-            <AnalyticsLoader />
-          </ConsentProvider>
+              {/* Consent shell - rendered once, available on every route */}
+              <CookieBanner />
+              <CookiePreferencesDialog />
+              <AnalyticsLoader />
+            </ConsentProvider>
+          </SmoothScroll>
         </MotionProvider>
       </body>
     </html>
