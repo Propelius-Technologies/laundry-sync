@@ -1,3 +1,8 @@
+"use client";
+
+import type { MouseEvent } from "react";
+import { usePathname } from "next/navigation";
+import { useLenis } from "lenis/react";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -65,6 +70,53 @@ export function Logo({
   priority = false,
 }: LogoProps) {
   const dark = tone === "dark";
+  const pathname = usePathname();
+  const lenis = useLenis();
+
+  /*
+   * A link to "/" does nothing visible when you are already on "/", which
+   * makes the logo feel broken - the usual expectation is that it takes you
+   * back to the top.
+   *
+   * So on the home page the navigation is cancelled and the page is scrolled
+   * instead. On any other route the Link is left alone and navigates normally,
+   * landing at the top of the new page.
+   */
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    onClick?.();
+
+    if (href !== "/" || pathname !== "/") return;
+
+    /*
+     * Never hijack a modified click - cmd/ctrl/shift/alt and middle-click all
+     * mean "open this somewhere else", and the browser must keep doing that.
+     */
+    if (
+      event.defaultPrevented ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (lenis) {
+      /* Lenis eases it, and makes it instant under prefers-reduced-motion. */
+      lenis.scrollTo(0);
+      return;
+    }
+
+    /* No smooth-scroll engine: fall back to the platform, honouring the
+       reduced-motion preference ourselves. */
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  };
   const lockup = (
     <span className={cn("flex items-center gap-2.5", !href && className)}>
       <LogoMark
@@ -91,7 +143,7 @@ export function Logo({
   return (
     <Link
       href={href}
-      onClick={onClick}
+      onClick={handleClick}
       aria-label={`${siteName} - home`}
       className={cn(
         "inline-flex rounded-ls-md focus-visible:outline-2 focus-visible:outline-offset-4",
