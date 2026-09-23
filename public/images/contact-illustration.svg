@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="960" height="760" viewBox="0 0 960 760" fill="none" role="img" aria-labelledby="ls-contact-title ls-contact-desc">
+<title id="ls-contact-title">LaundrySync contact illustration</title><desc id="ls-contact-desc">A laundry basket filled with folded garments, a shirt and a message card, illustrated in the LaundrySync navy, blue and aqua palette.</desc>
+<defs>
+  <linearGradient id="ct-blue" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#2A91FF"/><stop offset="1" stop-color="#0755CD"/></linearGradient>
+  <linearGradient id="ct-teal" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#9DF4F0"/><stop offset="1" stop-color="#15AFC4"/></linearGradient>
+  <linearGradient id="ct-linen" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#E7F1FE"/></linearGradient>
+  <filter id="ct-shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#0F2D5B" flood-opacity="0.10"/></filter>
+  <clipPath id="ct-basket"><path d="M155 491H768L731 680Q727 707 696 708H228Q197 707 192 680Z"/></clipPath>
+</defs>
+<!-- Pale backing and floor -->
+<path d="M142 366C150 223 319 132 493 150C679 169 808 313 814 461C822 608 679 706 486 705C287 705 133 570 142 366Z" fill="#F1F8FF"/>
+<ellipse cx="473" cy="710" rx="362" ry="19" fill="#DCEBFA" opacity=".72"/>
+<!-- leaves -->
+<path d="M207 492C157 466 113 415 102 349C165 353 210 396 222 461" fill="#0E3A69"/>
+<path d="M235 501C193 432 174 352 196 284C266 320 285 411 251 483" fill="url(#ct-teal)"/>
+<path d="M243 508C248 434 283 372 346 355C347 419 318 481 256 503" fill="#36C8CE"/>
+<path d="M243 521C242 446 229 404 207 350M245 517C260 463 286 427 315 403" stroke="#178FB1" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+<!-- folded stack -->
+<g stroke="#ABC9EA" stroke-width="3">
+<rect x="232" y="440" width="469" height="64" rx="25" fill="url(#ct-linen)"/><path d="M257 461H636" stroke="#EAF4FF" stroke-width="8" stroke-linecap="round"/>
+<rect x="241" y="388" width="445" height="60" rx="23" fill="url(#ct-teal)" stroke="#8BDFEA"/><path d="M269 406C391 410 546 402 653 407" stroke="#D3FBFC" stroke-width="8" stroke-linecap="round"/>
+<rect x="238" y="338" width="441" height="58" rx="22" fill="#123967" stroke="#0F2D5B"/><path d="M269 367C385 350 512 371 645 349" stroke="#2871BD" stroke-width="5" opacity=".65"/>
+<rect x="244" y="285" width="435" height="59" rx="22" fill="url(#ct-blue)" stroke="#1D6ADA"/><path d="M278 308C395 314 515 304 645 310" stroke="#6AB7FF" stroke-width="5" opacity=".6"/>
+</g>
+<!-- shirt -->
+<path d="M327 268L351 211L392 193L425 228L459 193L499 211L523 269L492 307H358Z" fill="#FDFEFF" stroke="#B4CCE8" stroke-width="4"/>
+<path d="M392 193L425 228L459 193L453 245L425 229L397 245Z" fill="#E5F0FF" stroke="#B4CCE8" stroke-width="3" stroke-linejoin="round"/>
+<path d="M404 240L425 252L447 240V309H404Z" fill="#F5FAFF" stroke="#CDDCF0" stroke-width="3"/><circle cx="425" cy="266" r="4.5" fill="#A3BEDF"/><circle cx="425" cy="287" r="4.5" fill="#A3BEDF"/>
+<!-- basket -->
+<g filter="url(#ct-shadow)"><path d="M155 491H768L731 680Q727 707 696 708H228Q197 707 192 680Z" fill="url(#ct-linen)" stroke="#9FBBDF" stroke-width="4"/>
+<path d="M155 493H770" stroke="#E7F4FF" stroke-width="12" stroke-linecap="round"/>
+<g clip-path="url(#ct-basket)"><path d="M190 611C310 538 383 648 474 581S637 589 754 556V714H190Z" fill="#0F2D5B"/><path d="M193 644C304 568 403 684 505 604S656 626 748 590V715H193Z" fill="#226DD9"/><path d="M197 668C326 592 393 714 513 640S651 657 749 626V714H197Z" fill="#39C9CF"/></g>
+<g fill="#E1EFFD" stroke="#CEDFF2" stroke-width="2"><rect x="224" y="518" width="29" height="159" rx="15"/><rect x="289" y="518" width="29" height="159" rx="15"/><rect x="354" y="518" width="29" height="159" rx="15"/><rect x="419" y="518" width="29" height="159" rx="15"/><rect x="484" y="518" width="29" height="159" rx="15"/><rect x="549" y="518" width="29" height="159" rx="15"/><rect x="614" y="518" width="29" height="159" rx="15"/><rect x="679" y="518" width="29" height="159" rx="15"/></g>
+<path d="M143 483C143 470 154 462 168 462H763C778 462 790 470 790 483V502H143Z" fill="#F9FCFF" stroke="#9FBBDF" stroke-width="4"/>
+</g>
+<!-- draped towel -->
+<path d="M611 472C643 438 706 452 717 503L737 610Q742 632 763 626L780 620L767 649Q751 671 718 666L610 651L607 552Q605 495 611 472Z" fill="#B6E1FA" stroke="#6BAFDC" stroke-width="3"/>
+<path d="M627 589L730 579M630 601L731 591" stroke="#67B2D9" stroke-width="5" stroke-linecap="round"/>
+<!-- right contact card -->
+<g filter="url(#ct-shadow)"><rect x="588" y="146" width="300" height="325" rx="29" fill="#FFFFFF" stroke="#A7C8E8" stroke-width="4"/>
+<circle cx="661" cy="232" r="42" fill="url(#ct-blue)"/>
+<rect x="642" y="222" width="39" height="27" rx="5" stroke="#FFFFFF" stroke-width="5"/><path d="M644 224L662 239L681 224" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="723" y="209" width="127" height="12" rx="6" fill="#C7D9EB"/><rect x="723" y="234" width="109" height="12" rx="6" fill="#DDE9F5"/>
+<rect x="628" y="306" width="219" height="13" rx="6.5" fill="#D2E1EF"/><rect x="628" y="338" width="178" height="13" rx="6.5" fill="#D2E1EF"/>
+<rect x="628" y="391" width="218" height="45" rx="22.5" fill="url(#ct-blue)"/>
+</g>
+<!-- message bubble -->
+<path d="M441 98H531Q554 98 554 121V157Q554 179 531 179H488L465 194V179H441Q417 179 417 155V121Q417 98 441 98Z" fill="#FFFFFF" stroke="#B5CDE8" stroke-width="3"/>
+<circle cx="456" cy="139" r="6" fill="#1666D8"/><circle cx="487" cy="139" r="6" fill="#1666D8"/><circle cx="518" cy="139" r="6" fill="#1666D8"/>
+<path d="M599 122C647 113 685 120 711 146" stroke="#24B9CF" stroke-width="5" stroke-linecap="round" stroke-dasharray="7 14"/>
+<path d="M833 110L848 78M863 132L887 110M873 167L903 163" stroke="#1D83E8" stroke-width="10" stroke-linecap="round"/>
+</svg>

@@ -10,7 +10,6 @@ export type NavItem = {
 };
 
 export const siteName = "LaundrySync";
-export const siteTagline = "by Propelius";
 
 export const mainNav: NavItem[] = [
   { label: "How it works", href: "/#how-it-works" },
@@ -35,3 +34,27 @@ export const heroSecondaryCta: NavItem = {
 export const sectionIds = mainNav
   .map((item) => item.href.split("#")[1])
   .filter((id): id is string => Boolean(id));
+
+/* ------------------------------------------------------------------ */
+/* Footer                                                              */
+/* ------------------------------------------------------------------ */
+
+export const footerExplore: NavItem[] = [
+  { label: "How it works", href: "/#how-it-works" },
+  { label: "Features", href: "/#features" },
+  { label: "For businesses", href: "/#for-businesses" },
+  { label: "Make it yours", href: "/#make-it-yours" },
+  { label: "FAQ", href: "/#faq" },
+];
+
+/** Routes to pages that are not built yet - the paths are the intended ones. */
+export const footerLegal: NavItem[] = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Use", href: "/terms-of-use" },
+  { label: "Cookie Policy", href: "/cookie-policy" },
+];
+
+export const footerContact: NavItem = { label: "Contact us", href: "/contact" };
+
+export const footerTagline =
+  "Branded online ordering and pickup scheduling for laundry and dry-cleaning businesses.";

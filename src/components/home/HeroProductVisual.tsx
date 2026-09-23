@@ -118,7 +118,6 @@ export function HeroProductVisual() {
               </MobileMockup>
             </motion.div>
           </div>
-
           <HeroNotifications step={step} />
         </div>
       </div>

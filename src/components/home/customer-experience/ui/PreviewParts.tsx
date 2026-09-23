@@ -154,27 +154,3 @@ export function PreviewSummaryRow({
     </span>
   );
 }
-
-/**
- * Image stand-in for the service cards. The project has no licensed laundry
- * photography, so each card uses a soft brand-tinted panel with the category
- * icon rather than a broken or unlicensed image.
- */
-export function PreviewImagePanel({
-  icon: Icon,
-  className,
-}: {
-  icon: Icon;
-  className?: string;
-}) {
-  return (
-    <span
-      className={cn(
-        "grid place-items-center rounded-[var(--ui-r)] bg-[linear-gradient(135deg,var(--color-ls-sky-100)_0%,var(--color-ls-sky-50)_55%,var(--color-ls-aqua-50)_100%)]",
-        className,
-      )}
-    >
-      <Icon className="h-[var(--ui-lg)] w-[var(--ui-lg)] text-ls-navy/45" />
-    </span>
-  );
-}

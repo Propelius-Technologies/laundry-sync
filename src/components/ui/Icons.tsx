@@ -149,6 +149,19 @@ export const Shirt = (props: IconProps) => (
   </Base>
 );
 
+export const Filter = (props: IconProps) => (
+  <Base {...props}>
+    <path d="M3.5 5.5h17l-6.6 7.6v5.3l-3.8 2v-7.3z" />
+  </Base>
+);
+
+export const Lock = (props: IconProps) => (
+  <Base {...props}>
+    <rect x="4.5" y="10.5" width="15" height="9.5" rx="2" />
+    <path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7" />
+  </Base>
+);
+
 /* ---- Product previews ---- */
 
 export const ChevronLeft = (props: IconProps) => (

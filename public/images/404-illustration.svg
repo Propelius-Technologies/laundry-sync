@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="760" viewBox="0 0 960 760" fill="none" role="img" aria-labelledby="ls-404-title ls-404-desc">
+<title id="ls-404-title">Page not found laundry illustration</title><desc id="ls-404-desc">A page labeled 404 is misplaced among freshly folded laundry in a white basket, with a dotted route returning home.</desc>
+<defs><linearGradient id="nf-blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#369CFF"/><stop offset="1" stop-color="#1253C8"/></linearGradient><linearGradient id="nf-aqua" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#B0F3F1"/><stop offset="1" stop-color="#21B8CE"/></linearGradient><linearGradient id="nf-basket" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#E3F0FF"/></linearGradient><filter id="nf-shadow" x="-25%" y="-25%" width="150%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#102E58" flood-opacity=".1"/></filter><clipPath id="nf-cut"><path d="M120 406H831L787 670Q780 711 738 711H211Q170 711 162 670Z"/></clipPath></defs>
+<path d="M118 363C146 222 310 155 493 152C691 149 859 264 851 426C845 600 713 702 489 705C274 708 94 539 118 363Z" fill="#F0F8FF"/>
+<ellipse cx="483" cy="712" rx="372" ry="20" fill="#DBEAFB" opacity=".8"/>
+<!-- dotted journey -->
+<path d="M230 190C305 102 400 169 469 183C564 202 637 123 712 145C788 167 794 240 737 263" stroke="#58ADFA" stroke-width="6" stroke-linecap="round" stroke-dasharray="9 20"/>
+<path d="M726 266L742 256L741 275" stroke="#58ADFA" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- route pin -->
+<path d="M740 104C740 83 756 67 777 67C798 67 814 83 814 104C814 131 777 170 777 170C777 170 740 131 740 104Z" fill="url(#nf-blue)"/><circle cx="777" cy="105" r="13" fill="#FFFFFF"/>
+<!-- basket garment pile -->
+<path d="M172 416C185 352 234 328 295 349C333 299 404 295 449 331C496 272 586 278 628 330C691 307 754 350 758 412" fill="#0E356A"/>
+<path d="M168 424C204 374 263 375 305 393C347 344 422 348 462 379C529 317 613 335 653 383C701 371 742 392 759 433" fill="url(#nf-blue)"/>
+<path d="M161 431C222 391 281 433 325 417C376 397 418 409 476 424C530 391 597 385 656 427C694 413 744 418 782 450" fill="#7EE5E6"/>
+<!-- 404 paper behind basket -->
+<g transform="translate(355 72) rotate(-7 142 190)" filter="url(#nf-shadow)"><path d="M0 0H223L285 65V354Q285 375 264 375H20Q0 375 0 354Z" fill="#FFFFFF" stroke="#A9C7E6" stroke-width="4"/><path d="M223 0V46Q223 65 243 65H285Z" fill="#D6E8FF"/><path d="M30 30H203" stroke="#0F2D5B" stroke-width="10" stroke-linecap="round"/><circle cx="115" cy="112" r="8" fill="#153B73"/><circle cx="166" cy="112" r="8" fill="#153B73"/><path d="M112 150Q141 126 171 150" stroke="#153B73" stroke-width="7" stroke-linecap="round"/><text x="141" y="245" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="86" fill="#1769DA" text-anchor="middle">404</text><rect x="43" y="277" width="199" height="10" rx="5" fill="#CDDCF0"/><rect x="43" y="304" width="145" height="10" rx="5" fill="#CDDCF0"/></g>
+<!-- basket with colored contents -->
+<g filter="url(#nf-shadow)"><path d="M120 406H831L787 670Q780 711 738 711H211Q170 711 162 670Z" fill="url(#nf-basket)" stroke="#A0BFDF" stroke-width="4"/>
+<g clip-path="url(#nf-cut)"><path d="M152 503C225 447 306 534 384 495C461 447 528 528 601 478C673 427 763 507 814 473V713H152Z" fill="#0F2D5B"/><path d="M150 560C245 502 315 592 422 541S618 570 711 531C757 511 790 530 820 526V713H150Z" fill="#216ADB"/><path d="M150 607C267 540 336 634 438 584S618 604 723 569C765 553 795 580 825 569V713H150Z" fill="#39D2D5"/></g>
+<g fill="#E9F4FF" stroke="#CBDEF3" stroke-width="2"><rect x="203" y="468" width="38" height="208" rx="19"/><rect x="289" y="468" width="38" height="208" rx="19"/><rect x="375" y="468" width="38" height="208" rx="19"/><rect x="461" y="468" width="38" height="208" rx="19"/><rect x="547" y="468" width="38" height="208" rx="19"/><rect x="633" y="468" width="38" height="208" rx="19"/><rect x="719" y="468" width="38" height="208" rx="19"/></g>
+<path d="M105 392C105 377 117 368 134 368H826C842 368 854 378 854 392V414H105Z" fill="#FFFFFF" stroke="#A0BFDF" stroke-width="4"/></g>
+<!-- hanging sock -->
+<path d="M728 353L794 356L785 510C782 542 816 551 836 537L862 522C884 511 913 523 911 552C909 581 876 599 836 597L757 589C708 586 696 544 704 502Z" fill="#F8FCFF" stroke="#8BB6E0" stroke-width="4"/>
+<path d="M728 355L794 357L791 396L722 393Z" fill="url(#nf-aqua)"/><path d="M707 500C734 508 765 507 785 499" stroke="#52BBD1" stroke-width="8"/><path d="M821 551C850 532 884 528 903 543" stroke="#39C8CE" stroke-width="8" stroke-linecap="round"/>
+<!-- decorative sparkle -->
+<path d="M105 271V306M88 289H122M843 225V253M829 239H857" stroke="#18BACE" stroke-width="6" stroke-linecap="round"/>
+</svg>

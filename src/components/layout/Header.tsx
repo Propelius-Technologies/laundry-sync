@@ -61,7 +61,7 @@ export function Header() {
                     "h-full max-w-full rounded-none border-transparent bg-transparent px-0 shadow-none backdrop-blur-none",
               )}
             >
-              <Logo href="/" />
+              <Logo href="/" priority />
 
               <nav
                 aria-label="Main"
@@ -77,10 +77,23 @@ export function Header() {
               </nav>
 
               <div className="flex items-center gap-2">
-                <Button href={headerCta.href} className="hidden sm:inline-flex">
-                  {headerCta.label}
-                  <ArrowUpRight className="size-4" />
-                </Button>
+                {/*
+                  Desktop-only. Below lg the header is just the logo and the
+                  menu button - the CTA crowds the pebble at narrow widths, and
+                  the mobile sheet carries it at full width instead.
+
+                  The visibility MUST live on this wrapper, not on the Button.
+                  Button's own base class list contains `inline-flex`, and
+                  Tailwind emits `.inline-flex` after `.hidden`; at equal
+                  specificity the later rule wins, so `hidden` passed to Button
+                  via className is silently ignored.
+                */}
+                <div className="hidden lg:flex">
+                  <Button href={headerCta.href}>
+                    {headerCta.label}
+                    <ArrowUpRight className="size-4" />
+                  </Button>
+                </div>
 
                 <button
                   ref={triggerRef}

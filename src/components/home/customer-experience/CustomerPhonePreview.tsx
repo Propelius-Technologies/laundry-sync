@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { MobileMockup } from "@/components/devices/MobileMockup";
 import { ServicesPreview } from "./screens/ServicesPreview";
@@ -14,11 +13,8 @@ import {
   previewDescriptions,
   type PreviewScreen,
 } from "@/data/customer-journey";
-import {
-  duration,
-  easeInOut,
-  easeOut,
-} from "@/components/motion/motion-tokens";
+import { duration, easeOut } from "@/components/motion/motion-tokens";
+import { useHasHover } from "@/lib/use-has-hover";
 import styles from "./CustomerPhonePreview.module.css";
 
 const screens: Record<PreviewScreen, () => React.JSX.Element> = {
@@ -31,26 +27,11 @@ const screens: Record<PreviewScreen, () => React.JSX.Element> = {
   history: OrderHistoryPreview,
 };
 
-/** True only for devices that really hover, so touch never gets the nudge. */
-function useHasHover() {
-  const [hasHover, setHasHover] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const update = () => setHasHover(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-
-  return hasHover;
-}
-
 /**
  * The phone and its backdrop.
  *
  * Three transforms are kept on separate wrappers so they never fight: the
- * outer element owns the scroll entrance, the middle one owns the hover nudge,
+ * outer element owns the scroll entrance, the middle one owns the hover tilt,
  * and the screen inside the frame owns the crossfade. The frame itself is
  * never remounted, so switching screens leaves the device perfectly still.
  */
@@ -58,7 +39,7 @@ export function CustomerPhonePreview({ screen }: { screen: PreviewScreen }) {
   const reduceMotion = useReducedMotion();
   const hasHover = useHasHover();
   const Screen = screens[screen];
-  const nudgeEnabled = hasHover && !reduceMotion;
+  const hoverEnabled = hasHover && !reduceMotion;
 
   return (
     <motion.div
@@ -129,14 +110,14 @@ export function CustomerPhonePreview({ screen }: { screen: PreviewScreen }) {
       </div>
 
       {/*
-        The phone. Hovering gives it a small rotation that settles straight
-        back to rest - a nudge rather than a held tilt, so the screen never
-        sits skewed while it is being read.
+        The phone. Hovering holds a small flat rotation for as long as the
+        pointer stays, and releases back to upright when it leaves. No 3D
+        tilt and no shadow - just the rotation.
       */}
       <div className="relative w-full max-w-[292px]">
         <motion.div
-          whileHover={nudgeEnabled ? { rotate: [0, -1.6, 0] } : undefined}
-          transition={{ duration: 0.75, ease: easeInOut }}
+          whileHover={hoverEnabled ? { rotate: -1.6 } : undefined}
+          transition={{ duration: 0.45, ease: easeOut }}
         >
           <div role="img" aria-label={previewDescriptions[screen]}>
             <MobileMockup>

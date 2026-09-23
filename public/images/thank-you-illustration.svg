@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="760" viewBox="0 0 960 760" fill="none" role="img" aria-labelledby="ls-thanks-title ls-thanks-desc">
+<title id="ls-thanks-title">Message sent illustration</title><desc id="ls-thanks-desc">Neatly folded laundry and a garment on a hanger next to a confirmation card with a prominent aqua checkmark.</desc>
+<defs><linearGradient id="th-blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3299FF"/><stop offset="1" stop-color="#1552C9"/></linearGradient><linearGradient id="th-teal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#91F2E9"/><stop offset="1" stop-color="#18B8C6"/></linearGradient><linearGradient id="th-linen" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#E3F0FF"/></linearGradient><filter id="th-shadow" x="-25%" y="-25%" width="160%" height="170%"><feDropShadow dx="0" dy="13" stdDeviation="17" flood-color="#0F2D5B" flood-opacity=".11"/></filter></defs>
+<path d="M136 411C138 248 289 144 473 147C669 150 830 262 827 441C823 612 673 695 477 694C276 693 134 585 136 411Z" fill="#F0F8FF"/>
+<ellipse cx="485" cy="704" rx="356" ry="20" fill="#DDEAFB" opacity=".8"/>
+<!-- hanger -->
+<path d="M291 176C284 155 291 138 312 135C337 131 353 152 342 171C336 181 325 184 325 200V214" stroke="#0F2D5B" stroke-width="17" stroke-linecap="round"/>
+<path d="M324 214L250 266Q232 277 243 292L280 328H372L410 292Q421 276 403 265Z" fill="#1B4E9A" stroke="#0F2D5B" stroke-width="4" stroke-linejoin="round"/>
+<!-- shirt -->
+<path d="M278 257L245 279L209 380L267 406L289 369L289 469H414V369L437 406L491 380L456 280L413 257L375 285L351 304L327 285Z" fill="url(#th-linen)" stroke="#ADC9E5" stroke-width="4" stroke-linejoin="round"/>
+<path d="M327 285L351 304L375 285L388 329L351 308L314 329Z" fill="#D5E9FE" stroke="#ADC9E5" stroke-width="3" stroke-linejoin="round"/>
+<path d="M336 314V463" stroke="#B7D2EF" stroke-width="4"/><circle cx="351" cy="350" r="6" fill="#BFDAF2"/><circle cx="351" cy="385" r="6" fill="#BFDAF2"/><circle cx="351" cy="420" r="6" fill="#BFDAF2"/>
+<!-- folded towels -->
+<g filter="url(#th-shadow)"><rect x="155" y="526" width="476" height="76" rx="26" fill="url(#th-teal)" stroke="#3CBCCA" stroke-width="3"/><path d="M184 549H587" stroke="#B0F6EF" stroke-width="8" stroke-linecap="round"/>
+<rect x="165" y="462" width="463" height="71" rx="24" fill="url(#th-linen)" stroke="#B8D1EC" stroke-width="3"/><path d="M191 486H592" stroke="#E4F2FF" stroke-width="8" stroke-linecap="round"/>
+<rect x="175" y="395" width="437" height="73" rx="25" fill="url(#th-blue)" stroke="#226ED4" stroke-width="3"/><path d="M203 421H573" stroke="#75BDFF" stroke-width="8" stroke-linecap="round"/>
+<rect x="181" y="333" width="424" height="69" rx="25" fill="url(#th-linen)" stroke="#B8D1EC" stroke-width="3"/><path d="M209 355H571" stroke="#F8FCFF" stroke-width="8" stroke-linecap="round"/></g>
+<!-- confirmation card -->
+<g filter="url(#th-shadow)"><g transform="rotate(4 686 430)"><rect x="515" y="262" width="355" height="394" rx="37" fill="#FFFFFF" stroke="#9FBFE1" stroke-width="4"/><rect x="540" y="286" width="305" height="343" rx="25" fill="#FFFFFF" stroke="#D8E8F8" stroke-width="3"/>
+<circle cx="691" cy="421" r="100" fill="url(#th-teal)"/><path d="M638 421L677 457L745 383" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="601" y="554" width="180" height="13" rx="6.5" fill="#C8DBEF"/><rect x="627" y="582" width="128" height="12" rx="6" fill="#DCE9F6"/></g></g>
+<!-- sparklers -->
+<path d="M817 169V217M794 193H840M848 235V261M835 248H861" stroke="#17BFCB" stroke-width="7" stroke-linecap="round"/>
+<path d="M117 317V344M103 330H131" stroke="#42BCDF" stroke-width="6" stroke-linecap="round"/>
+</svg>

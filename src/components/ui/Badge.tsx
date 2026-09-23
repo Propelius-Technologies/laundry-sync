@@ -45,6 +45,8 @@ type EyebrowProps = {
   as?: ElementType;
   /** Shows the small brand dot before the text (as in the hero). */
   withDot?: boolean;
+  /** Shows a short leading rule instead (supporting pages). */
+  withRule?: boolean;
   className?: string;
   children: ReactNode;
 };
@@ -59,6 +61,7 @@ type EyebrowProps = {
 export function Eyebrow({
   as: Tag = "p",
   withDot = false,
+  withRule = false,
   className,
   children,
 }: EyebrowProps) {
@@ -66,7 +69,7 @@ export function Eyebrow({
     <Tag
       className={cn(
         "ls-label flex items-center text-ls-muted",
-        withDot ? "gap-3" : "gap-0",
+        withDot || withRule ? "gap-3" : "gap-0",
         className,
       )}
     >
@@ -74,6 +77,12 @@ export function Eyebrow({
         <span
           aria-hidden="true"
           className="size-2 shrink-0 rounded-ls-pill bg-ls-blue"
+        />
+      )}
+      {withRule && (
+        <span
+          aria-hidden="true"
+          className="h-0.5 w-8 shrink-0 rounded-ls-pill bg-ls-blue"
         />
       )}
       {children}

@@ -62,6 +62,7 @@
   --color-ls-aqua-50: #ecfdff;
 
   /* ---------- Status ---------- */
+  --color-ls-error: #b91c1c; /* 6.4:1 on white - form validation text */
   --color-ls-success: #16a34a;
   --color-ls-success-soft: #dcfce7;
   --color-ls-success-ink: #14532d;
@@ -175,11 +176,16 @@
   --color-text-on-brand: var(--color-ls-bg);
 
   --color-background: var(--color-ls-bg);
+  /* Dark section surface and the text roles that sit on it. */
+  --color-surface-dark: var(--color-ls-ink);
+  --color-text-on-dark: var(--color-ls-bg);
+  --color-text-on-dark-muted: var(--color-ls-sky-200);
   --color-surface: var(--color-ls-surface);
   --color-surface-sky: var(--color-ls-sky-100);
   --color-border: var(--color-ls-border);
 
   --color-success: var(--color-ls-success);
+  --color-error: var(--color-ls-error);
   --color-focus-ring: var(--color-ls-navy-500);
 
   /* ---------- Typography roles ---------- */
@@ -228,6 +234,35 @@
   --gradient-device-lid: linear-gradient(158deg, #454d5a 0%, #272c35 52%, #1b1f26 100%);
   --gradient-device-base: linear-gradient(180deg, #e4e8ee 0%, #c3c9d3 46%, #959dab 100%);
   --gradient-device-rail: linear-gradient(145deg, #5a626f 0%, #2c323c 26%, #1a1f26 62%, #3b424e 100%);
+
+  /* ------------------------------------------------------------------ */
+  /* BRAND PREVIEW PRESETS (section 05 only)                             */
+  /*                                                                      */
+  /* Each preset carries an accent and a darker "strong" variant. The     */
+  /* strong variant is the only one that ever sits under white text, and  */
+  /* every one clears 4.5:1 against white:                                */
+  /*   ocean 5.4:1 - indigo 7.1:1 - forest 5.0:1 - coral 5.8:1            */
+  /* ------------------------------------------------------------------ */
+  /* accent | strong (white text) | soft surface | ring */
+  --preview-ocean: #0891b2;
+  --preview-ocean-strong: #0e7490;
+  --preview-ocean-soft: #e2f2f6;
+  --preview-ocean-ring: #a9d9e4;
+
+  --preview-indigo: #4f46e5;
+  --preview-indigo-strong: #4338ca;
+  --preview-indigo-soft: #eae9fc;
+  --preview-indigo-ring: #c1bef6;
+
+  --preview-forest: #15803d;
+  --preview-forest-strong: #15803d;
+  --preview-forest-soft: #e3f0e8;
+  --preview-forest-ring: #add3bb;
+
+  --preview-coral: #dc6b54;
+  --preview-coral-strong: #b0402f;
+  --preview-coral-soft: #fbedea;
+  --preview-coral-ring: #f3cbc3;
 
   /* ---------- Motion roles ---------- */
   --motion-fast: var(--duration-ls-fast);

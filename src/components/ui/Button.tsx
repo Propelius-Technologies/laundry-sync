@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "text";
+type Variant = "primary" | "secondary" | "accent" | "text";
 type Size = "sm" | "md" | "lg";
 
 const base =
@@ -17,6 +17,9 @@ const variants: Record<Variant, string> = {
     "text-white shadow-ls-cta hover:brightness-[1.07] active:translate-y-px",
   secondary:
     "border border-ls-border bg-white text-ls-ink shadow-ls-xs hover:border-ls-sky-200 hover:bg-ls-sky-50 active:translate-y-px",
+  /* For dark surfaces. Aqua on ink measures 8.5:1. */
+  accent:
+    "bg-ls-aqua text-ls-ink shadow-ls-sm hover:-translate-y-0.5 hover:bg-ls-cyan hover:shadow-ls-card active:translate-y-0",
   text: "text-ls-ink hover:text-ls-navy-600 [&_svg]:transition-transform [&_svg]:duration-(--motion-normal) hover:[&_svg]:translate-x-0.5",
 };
 

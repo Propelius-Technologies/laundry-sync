@@ -1,35 +1,51 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { siteName, siteTagline } from "@/data/navigation";
+import { siteName } from "@/data/navigation";
 
 type LogoProps = {
   className?: string;
+  /** "dark" renders the lockup for dark surfaces. */
+  tone?: "light" | "dark";
   /** Renders the mark on its own (used inside the product mockups). */
   markOnly?: boolean;
   /** Wraps the lockup in a link to the homepage. */
   href?: string;
   onClick?: () => void;
+  /**
+   * Preloads the mark. Only the header lockup should set this: it is the one
+   * instance that is above the fold. The footer lockup previously inherited it
+   * too, which made every page preload a below-the-fold image in competition
+   * with the real LCP element.
+   */
+  priority?: boolean;
 };
 
 /**
  * LaundrySync lockup.
  *
  * The hanger + wave mark is the approved brand asset and is used unmodified.
- * The wordmark and "by Propelius" attribution are set in Inter to match the
+ * The wordmark is set in Inter to match the
  * approved reference; see the handover notes - an official horizontal lockup
  * (ideally SVG) should replace this typographic wordmark when available.
  */
 export function LogoMark({
   className,
   priority = false,
+  tone = "light",
 }: {
   className?: string;
   priority?: boolean;
+  /** "dark" swaps to the approved white mark for dark surfaces. */
+  tone?: "light" | "dark";
 }) {
   return (
     <Image
-      src="/brand/brand-icon-primary.png"
+      src={
+        tone === "dark"
+          ? "/brand/brand-icon-white.png"
+          : "/brand/brand-icon-primary.png"
+      }
       alt=""
       width={1254}
       height={1254}
@@ -40,19 +56,31 @@ export function LogoMark({
   );
 }
 
-export function Logo({ className, markOnly, href, onClick }: LogoProps) {
+export function Logo({
+  className,
+  markOnly,
+  href,
+  onClick,
+  tone = "light",
+  priority = false,
+}: LogoProps) {
+  const dark = tone === "dark";
   const lockup = (
     <span className={cn("flex items-center gap-2.5", !href && className)}>
-      <LogoMark priority className="h-11 w-11 sm:h-12 sm:w-12" />
+      <LogoMark
+        priority={priority}
+        tone={tone}
+        className="h-11 w-11 sm:h-12 sm:w-12"
+      />
       {!markOnly && (
-        <span className="flex flex-col leading-none">
-          <span className="text-[1.375rem] font-bold tracking-[-0.022em] text-ls-ink sm:text-[1.5rem]">
-            Laundry
-            <span className="text-ls-cyan">Sync</span>
-          </span>
-          <span className="mt-1 text-[0.6875rem] font-medium tracking-[0.02em] text-ls-muted">
-            {siteTagline}
-          </span>
+        <span
+          className={cn(
+            "text-[1.375rem] leading-none font-bold tracking-[-0.022em] sm:text-[1.5rem]",
+            dark ? "text-white" : "text-ls-ink",
+          )}
+        >
+          Laundry
+          <span className="text-ls-cyan">Sync</span>
         </span>
       )}
     </span>
@@ -64,9 +92,14 @@ export function Logo({ className, markOnly, href, onClick }: LogoProps) {
     <Link
       href={href}
       onClick={onClick}
-      aria-label={`${siteName} ${siteTagline} - home`}
+      aria-label={`${siteName} - home`}
       className={cn(
-        "inline-flex rounded-ls-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ls-navy-500",
+        "inline-flex rounded-ls-md focus-visible:outline-2 focus-visible:outline-offset-4",
+        // The navy focus ring only reaches 3:1 on light surfaces; on the dark
+        // footer it needs the aqua, which clears 8:1 against the navy.
+        dark
+          ? "focus-visible:outline-ls-aqua"
+          : "focus-visible:outline-ls-navy-500",
         className,
       )}
     >

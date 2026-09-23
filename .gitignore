@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#docs
+
+LEGAL_LAUNCH_CHECKLIST.md
+SEO_IMPLEMENTATION.md
+docs/DESIGN_SYSTEM.md

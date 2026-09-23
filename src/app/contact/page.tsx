@@ -1,40 +1,25 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import { pageMetadata } from "@/lib/seo";
 import { Section } from "@/components/ui/Section";
-import { ArrowRight } from "@/components/ui/Icons";
+import { ContactIntro } from "@/components/contact/ContactIntro";
+import { ContactForm } from "@/components/contact/ContactForm";
 
-export const metadata: Metadata = {
-  title: "Contact us",
+export const metadata = pageMetadata({
+  title: "Contact Us & Request a Demo",
   description:
-    "Talk to the LaundrySync team about bringing your laundry or dry-cleaning business online.",
-};
+    "Talk to the LaundrySync team about online ordering, pickup scheduling and a branded digital experience for your laundry or dry-cleaning business.",
+  path: "/contact",
+});
 
 /**
- * Stopgap destination so every "Contact us" / "Talk to our team" CTA resolves.
- * Replace with the real contact page (form + verified contact details) - see
- * the handover notes.
+ * Contact page. Server component so the metadata stays static - only the
+ * intro (entrance motion) and the form itself are client components.
  */
 export default function ContactPage() {
   return (
-    <Section space="lg">
-      <div className="max-w-[36rem]">
-        <h1 className="ls-display">Talk to our team</h1>
-        <p className="ls-body-lg mt-6">
-          Tell us about your laundry or dry-cleaning business and we will show
-          you how LaundrySync handles services, pickups and order tracking for
-          your customers and your team.
-        </p>
-        <p className="ls-body-sm mt-8">
-          This page is a placeholder. The contact form and details are still to
-          be added.
-        </p>
-        <Link
-          href="/"
-          className="mt-8 inline-flex items-center gap-2 text-button font-semibold text-ls-navy transition-colors hover:text-ls-navy-600"
-        >
-          Back to home
-          <ArrowRight className="size-4" />
-        </Link>
+    <Section space="page">
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-16 xl:gap-20">
+        <ContactIntro />
+        <ContactForm />
       </div>
     </Section>
   );

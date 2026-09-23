@@ -134,6 +134,139 @@
   }
 }
 
+@layer components {
+  /*
+   * Scoped brand-preview theming.
+   *
+   * The selected preset is applied by a data-brand attribute on the preview
+   * container, so it resolves for that subtree only. Nothing here touches
+   * :root or the Tailwind theme - the rest of the site is unaffected by
+   * whatever a visitor picks.
+   */
+  .ls-brand-preview {
+    --preview-brand: var(--preview-ocean);
+    --preview-brand-strong: var(--preview-ocean-strong);
+    --preview-brand-foreground: var(--color-ls-bg);
+    /*
+     * The pale surface and ring tints are declared per preset in tokens.css
+     * rather than derived with color-mix(). The build tool synthesises its own
+     * color-mix fallback - plain var(--preview-brand) - which would put a
+     * fully saturated panel under dark text wherever color-mix is
+     * unsupported. Literal tints have no such failure mode.
+     */
+    --preview-brand-soft: var(--preview-ocean-soft);
+    --preview-brand-ring: var(--preview-ocean-ring);
+  }
+
+  .ls-brand-preview[data-brand="indigo"] {
+    --preview-brand: var(--preview-indigo);
+    --preview-brand-strong: var(--preview-indigo-strong);
+    --preview-brand-soft: var(--preview-indigo-soft);
+    --preview-brand-ring: var(--preview-indigo-ring);
+  }
+
+  .ls-brand-preview[data-brand="forest"] {
+    --preview-brand: var(--preview-forest);
+    --preview-brand-strong: var(--preview-forest-strong);
+    --preview-brand-soft: var(--preview-forest-soft);
+    --preview-brand-ring: var(--preview-forest-ring);
+  }
+
+  .ls-brand-preview[data-brand="coral"] {
+    --preview-brand: var(--preview-coral);
+    --preview-brand-strong: var(--preview-coral-strong);
+    --preview-brand-soft: var(--preview-coral-soft);
+    --preview-brand-ring: var(--preview-coral-ring);
+  }
+
+  /* Brand-tinted surfaces settle rather than flash when the preset changes. */
+  .ls-brand-preview [data-brand-tinted] {
+    transition:
+      background-color var(--motion-slow) var(--motion-ease),
+      border-color var(--motion-slow) var(--motion-ease),
+      color var(--motion-slow) var(--motion-ease);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ls-brand-preview [data-brand-tinted] {
+      transition: none;
+    }
+  }
+}
+
+@layer components {
+  /*
+   * Long-form legal prose. Sizing and colour come from the same tokens the
+   * rest of the site uses, so the policies read as part of the website rather
+   * than a pasted document.
+   */
+  .ls-prose {
+    font-size: var(--text-body-sm);
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  .ls-prose h2 {
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    letter-spacing: var(--text-h3--letter-spacing);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-heading);
+    margin-top: 3rem;
+    scroll-margin-top: 6rem;
+  }
+
+  .ls-prose h2:first-child {
+    margin-top: 0;
+  }
+
+  .ls-prose h3 {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-heading);
+    margin-top: 1.75rem;
+  }
+
+  .ls-prose p,
+  .ls-prose ul,
+  .ls-prose ol {
+    margin-top: 1rem;
+    /* max-width: 70ch; */
+  }
+
+  .ls-prose ul,
+  .ls-prose ol {
+    padding-left: 1.25rem;
+  }
+
+  .ls-prose ul {
+    list-style: disc;
+  }
+
+  .ls-prose ol {
+    list-style: decimal;
+  }
+
+  .ls-prose li {
+    margin-top: 0.5rem;
+  }
+
+  .ls-prose a {
+    color: var(--color-brand-primary);
+    font-weight: var(--font-weight-medium);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .ls-prose a:hover {
+    color: var(--color-brand-blue);
+  }
+
+  .ls-prose strong {
+    color: var(--color-text-heading);
+  }
+}
+
 @layer utilities {
   /*
    * Device screen scales.
