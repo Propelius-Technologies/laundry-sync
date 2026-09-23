@@ -9,29 +9,67 @@
 import { legalLastUpdated } from "@/data/legal";
 
 /**
- * The intended production origin.
+ * The production origin to fall back on when nothing else identifies the host.
  *
- * IMPORTANT - this is NOT yet confirmed by anything in the repository. There is
- * no vercel.json, netlify.toml, Dockerfile, CI workflow or deployment manifest
- * in this project, and `.env.local` contains only the Web3Forms key. The value
- * below is the domain named in the Phase 16 brief and is treated as intended
- * rather than verified. See docs/SEO_IMPLEMENTATION.md.
+ * IMPORTANT - this is NOT yet confirmed, and as of the last check
+ * laundry-sync.com does not resolve at all (DNS failure). It is the domain
+ * named in the Phase 16 brief, treated as intended rather than verified.
+ * See docs/SEO_IMPLEMENTATION.md.
  *
  * Note the hyphen: laundry-sync.com, NOT laundrysync.com.
- *
- * Set NEXT_PUBLIC_SITE_ORIGIN at build time to override it without a code
- * change - that is how a preview deployment points at its own hostname instead
- * of claiming to be production.
  */
 const FALLBACK_ORIGIN = "https://laundry-sync.com";
 
-/** True only when the origin came from deployment configuration, not the fallback. */
-export const originIsConfigured = Boolean(process.env.NEXT_PUBLIC_SITE_ORIGIN);
+/**
+ * Resolves the origin every absolute URL on the site is built from.
+ *
+ * Order matters, and it is deliberately "whoever is actually serving this"
+ * rather than "whatever domain we hope to use one day". Absolute URLs that
+ * point at a host which does not resolve are worse than useless: Slack,
+ * WhatsApp, LinkedIn and X all fetch og:image server-side, so a dead hostname
+ * renders as a broken-image placeholder, and a canonical pointing at a dead
+ * hostname can cost the page its indexing entirely.
+ *
+ * 1. NEXT_PUBLIC_SITE_ORIGIN - explicit, always wins. Use it to pin a
+ *    hostname, or to point a staging build at itself.
+ *
+ * 2. VERCEL_PROJECT_PRODUCTION_URL - Vercel sets this on every build to "the
+ *    shortest production custom domain, or vercel.app domain if no custom
+ *    domain is available", and documents it for exactly this purpose
+ *    ("reliably generate links that point to production such as OG-image
+ *    URLs"). It is always set, including on preview builds, so a preview's
+ *    share card still points at real production assets rather than at a
+ *    throwaway deployment URL.
+ *
+ *    This self-corrects. Today the project has no custom domain, so it returns
+ *    laundry-sync.vercel.app. The moment laundry-sync.com is attached to the
+ *    Vercel project, the same variable returns laundry-sync.com and every
+ *    canonical, sitemap entry, JSON-LD URL and share image follows - with no
+ *    code change and no redeploy beyond the next build.
+ *
+ *    Requires "Enable access to System Environment Variables" in the Vercel
+ *    project settings, which is on by default.
+ *
+ * 3. FALLBACK_ORIGIN - local builds and any non-Vercel host.
+ */
+function resolveOrigin(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_ORIGIN;
+  if (explicit) return explicit.replace(/\/+$/, "");
+
+  const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (vercelHost) return `https://${vercelHost.replace(/\/+$/, "")}`;
+
+  return FALLBACK_ORIGIN;
+}
+
+/** True when the origin came from configuration rather than the fallback. */
+export const originIsConfigured = Boolean(
+  process.env.NEXT_PUBLIC_SITE_ORIGIN ||
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+);
 
 /** Normalised: no trailing slash, so `${siteOrigin}/contact` is always correct. */
-export const siteOrigin = (
-  process.env.NEXT_PUBLIC_SITE_ORIGIN ?? FALLBACK_ORIGIN
-).replace(/\/+$/, "");
+export const siteOrigin = resolveOrigin();
 
 /**
  * Whether this build may be indexed.
