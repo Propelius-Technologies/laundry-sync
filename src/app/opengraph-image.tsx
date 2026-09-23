@@ -97,29 +97,35 @@ export default function OpengraphImage() {
           </div>
         </div>
 
-        {/* One concise message - kept short so it stays legible as a thumbnail. */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            fontSize: 68,
-            fontWeight: 600,
-            lineHeight: 1.15,
-            letterSpacing: "-0.03em",
-            color: "#ffffff",
-          }}
-        >
-          <div style={{ display: "flex" }}>Branded online ordering</div>
-          <div style={{ display: "flex", color: AQUA }}>
-            for laundry businesses.
-          </div>
-        </div>
-
-        {/* Propelius attribution */}
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div style={{ width: 48, height: 3, background: CYAN }} />
-          <div style={{ fontSize: 26, color: "#cfe3f5" }}>
-            A product by Propelius
+        {/*
+          One concise message, anchored to the bottom with the accent rule
+          above it. There is deliberately no "by Propelius" attribution - the
+          card carries the LaundrySync brand only.
+        */}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              width: 72,
+              height: 4,
+              background: CYAN,
+              marginBottom: 32,
+            }}
+          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              fontSize: 68,
+              fontWeight: 600,
+              lineHeight: 1.15,
+              letterSpacing: "-0.03em",
+              color: "#ffffff",
+            }}
+          >
+            <div style={{ display: "flex" }}>Branded online ordering</div>
+            <div style={{ display: "flex", color: AQUA }}>
+              for laundry businesses.
+            </div>
           </div>
         </div>
       </div>

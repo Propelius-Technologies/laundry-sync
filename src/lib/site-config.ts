@@ -98,10 +98,20 @@ export const legalPagesApproved = legalLastUpdated !== null;
 
 export const siteConfig = {
   name: "LaundrySync",
+
+  /*
+   * Used only for non-visible publisher metadata (author/creator/publisher)
+   * and the JSON-LD Organization node, which name the company that operates
+   * the site - the same fact the legal pages state.
+   *
+   * It is deliberately NOT rendered as a visible "by Propelius" attribution
+   * anywhere: not in the title, not in the share card, not in the header or
+   * footer.
+   */
   parentBrand: "Propelius",
 
   /** Used as the <title> when a page sets none, and as og:title site-wide. */
-  defaultTitle: "LaundrySync | Laundry Business Software by Propelius",
+  defaultTitle: "LaundrySync | Laundry Business Software",
   titleTemplate: "%s | LaundrySync",
 
   /**
@@ -114,7 +124,7 @@ export const siteConfig = {
 
   /** Served by src/app/opengraph-image.tsx at /opengraph-image. */
   ogImageAlt:
-    "LaundrySync - branded online ordering for laundry businesses. A product by Propelius.",
+    "LaundrySync - branded online ordering for laundry businesses.",
 
   ogLocale: "en_US",
 

@@ -51,7 +51,21 @@ export function pageMetadata({
   const url = absoluteUrl(path);
 
   return {
-    title,
+    /*
+     * `absolute` rather than a bare string, so the brand is guaranteed to be
+     * in every <title> regardless of how the layout's template merges.
+     *
+     * This is not theoretical. The root layout's `title.template` applies to
+     * CHILD segments, and app/page.tsx counts as the same segment as
+     * app/layout.tsx - so the homepage rendered as
+     * "Laundry Business Software & Online Ordering" with no "| LaundrySync"
+     * at all, while every nested route got the suffix. Verified in the built
+     * output.
+     *
+     * Stating the resolved title here also guarantees <title> and og:title
+     * always match.
+     */
+    title: { absolute: fullTitle },
     description,
     alternates: { canonical: path },
 
