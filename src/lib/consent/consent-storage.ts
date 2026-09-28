@@ -1,5 +1,6 @@
 import {
   ANALYTICS_COOKIE_PREFIXES,
+  CONSENT_MAX_AGE_MONTHS,
   CONSENT_STORAGE_KEY,
   CONSENT_VERSION,
   DEFAULT_CATEGORIES,
@@ -46,9 +47,10 @@ export function subscribeConsent(onChange: () => void) {
 /**
  * Parses a raw snapshot.
  *
- * Returns null when there is none, when it cannot be parsed, or when it was
- * saved against an older consent version - all of which mean the visitor has
- * not decided under the current purposes and should be asked again.
+ * Returns null when there is none, when it cannot be parsed, when it was
+ * saved against an older consent version, or when it is older than
+ * CONSENT_MAX_AGE_MONTHS (or has no readable date) - all of which mean the
+ * visitor should be asked again.
  */
 export function parseConsent(raw: string): ConsentRecord | null {
   if (!raw || raw === SERVER_SNAPSHOT) return null;
@@ -58,9 +60,15 @@ export function parseConsent(raw: string): ConsentRecord | null {
     if (parsed?.version !== CONSENT_VERSION) return null;
     if (typeof parsed.categories?.analytics !== "boolean") return null;
 
+    const decidedAt = new Date(String(parsed.decidedAt ?? ""));
+    if (Number.isNaN(decidedAt.getTime())) return null;
+    const expiresAt = new Date(decidedAt);
+    expiresAt.setMonth(expiresAt.getMonth() + CONSENT_MAX_AGE_MONTHS);
+    if (Date.now() >= expiresAt.getTime()) return null;
+
     return {
       version: CONSENT_VERSION,
-      decidedAt: String(parsed.decidedAt ?? ""),
+      decidedAt: decidedAt.toISOString(),
       categories: { analytics: parsed.categories.analytics },
     };
   } catch {

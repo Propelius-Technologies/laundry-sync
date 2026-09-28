@@ -16,6 +16,12 @@ export const CONSENT_VERSION = 1;
 
 export const CONSENT_STORAGE_KEY = "ls-consent";
 
+/**
+ * A stored choice older than this counts as no choice: the banner returns and
+ * nothing optional loads until the visitor decides again.
+ */
+export const CONSENT_MAX_AGE_MONTHS = 6;
+
 /** Optional categories start off. Nothing here is pre-selected. */
 export const DEFAULT_CATEGORIES: ConsentCategories = { analytics: false };
 
