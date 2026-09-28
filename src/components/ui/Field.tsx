@@ -22,7 +22,11 @@ const controlClass = cn(
 type BaseProps = {
   name: string;
   label: string;
-  /** Short guidance shown under the label and read with the control. */
+  /**
+   * Short guidance shown in brackets after the label, e.g. "(work email
+   * preferred)". Inside the <label>, so it is part of the field's name and
+   * keeps every label one line, aligned with its neighbours in the grid.
+   */
   hint?: string;
   error?: string;
   required?: boolean;
@@ -42,10 +46,9 @@ type FieldProps =
   | (BaseProps & { as: "textarea"; rows?: number; maxLength?: number })
   | (BaseProps & { as: "select"; options: string[] });
 
-/** ids the control's aria-describedby should list: hint first, then error. */
-export function describedBy(name: string, hint?: string, error?: string) {
-  const ids = [hint && `${name}-hint`, error && `${name}-error`].filter(Boolean);
-  return ids.length ? ids.join(" ") : undefined;
+/** The control's aria-describedby: its error message, while it has one. */
+export function describedBy(name: string, error?: string) {
+  return error ? `${name}-error` : undefined;
 }
 
 export function FieldShell({
@@ -70,6 +73,13 @@ export function FieldShell({
         className="block text-body-sm font-semibold text-ls-ink"
       >
         {label}
+        {/* A real space, not a margin, so the accessible name reads naturally. */}
+        {hint && (
+          <>
+            {" "}
+            <span className="font-normal text-ls-muted">({hint})</span>
+          </>
+        )}
         {/* The required attribute is the signal for assistive tech; this is
             the matching visual cue. */}
         {required && (
@@ -78,11 +88,6 @@ export function FieldShell({
           </span>
         )}
       </label>
-      {hint && (
-        <p id={`${name}-hint`} className="mt-1 text-caption text-ls-muted">
-          {hint}
-        </p>
-      )}
       <div className="mt-2">{children}</div>
       {error && (
         <p id={`${name}-error`} className="mt-1.5 text-caption text-ls-error">
@@ -102,7 +107,7 @@ export function Field(props: FieldProps) {
     required,
     disabled,
     "aria-invalid": error ? (true as const) : undefined,
-    "aria-describedby": describedBy(name, hint, error),
+    "aria-describedby": describedBy(name, error),
     className: cn(controlClass, error ? "border-ls-error" : "border-ls-border"),
   };
 

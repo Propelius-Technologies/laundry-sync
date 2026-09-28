@@ -451,7 +451,7 @@ export function ContactForm() {
           <Field
             name="email"
             label="Email"
-            hint="Work email preferred"
+            hint="work email preferred"
             type="email"
             autoComplete="email"
             required

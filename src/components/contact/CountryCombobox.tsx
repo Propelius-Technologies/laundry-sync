@@ -176,7 +176,7 @@ export function CountryCombobox({
           aria-controls={listId}
           aria-activedescendant={active ? optionId(active.code) : undefined}
           aria-invalid={error ? true : undefined}
-          aria-describedby={describedBy(name, undefined, error)}
+          aria-describedby={describedBy(name, error)}
           autoComplete="country-name"
           autoCapitalize="words"
           spellCheck={false}
