@@ -1,7 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import { legalPagesApproved } from "@/lib/site-config";
 import Link from "next/link";
-import { LegalPage, Tbc, type LegalSection } from "@/components/legal/LegalPage";
+import { LegalPage, Fact, type LegalSection } from "@/components/legal/LegalPage";
 import { legalInfo, verifiedProcessors } from "@/data/legal";
 
 export const metadata = pageMetadata({
@@ -79,16 +79,16 @@ export default function PrivacyPolicyPage() {
 
       <h2 id="operator">Who operates this website</h2>
       <p>
-        This website is operated by <Tbc>registered legal entity name</Tbc>,
+        This website is operated by <Fact value={legalInfo.legalEntityName} label="registered legal entity name" />,
         trading as {legalInfo.parentBrand}, at{" "}
-        <Tbc>registered business address</Tbc>. {legalInfo.brand} is a product
+        <Fact value={legalInfo.registeredAddress} label="registered business address" />. {legalInfo.brand} is a product
         of {legalInfo.parentBrand}.
       </p>
       <p>
         Where data protection law applies to our activities, the entity named
         above is the controller of the personal information described in this
         policy. Which data protection regime applies depends on the operating
-        jurisdiction, which is <Tbc>operating jurisdiction</Tbc>, and requires
+        jurisdiction, which is <Fact value={legalInfo.jurisdiction} label="operating jurisdiction" />, and requires
         legal confirmation.
       </p>
 
@@ -181,7 +181,10 @@ export default function PrivacyPolicyPage() {
         sub-processors it uses, and its privacy page could not be retrieved for
         review. We have therefore not asserted any of those details here. They
         must be obtained directly from Web3Forms before publication:{" "}
-        <Tbc>Web3Forms retention period, data location, sub-processors and data processing terms</Tbc>
+        <Fact
+          value={legalInfo.web3formsTerms}
+          label="Web3Forms retention period, data location, sub-processors and data processing terms"
+        />
         .
       </p>
 
@@ -196,7 +199,7 @@ export default function PrivacyPolicyPage() {
         ))}
         <li>
           <strong>Website hosting</strong> &mdash; provided by{" "}
-          <Tbc>hosting provider and region</Tbc>.
+          <Fact value={legalInfo.hostingProvider} label="hosting provider and region" />.
         </li>
       </ul>
       <p>
@@ -267,7 +270,10 @@ export default function PrivacyPolicyPage() {
         Our service providers may process information outside the country you
         are in. The countries involved, and the safeguards relied on for those
         transfers, depend on our hosting provider and on Web3Forms, and are{" "}
-        <Tbc>transfer destinations and safeguards for each provider</Tbc>.
+        <Fact
+          value={legalInfo.transferSafeguards}
+          label="transfer destinations and safeguards for each provider"
+        />.
       </p>
 
       <h2 id="retention">How long we keep information</h2>
@@ -281,7 +287,7 @@ export default function PrivacyPolicyPage() {
           A specific retention period has not yet been set. This is a business
           decision for {legalInfo.parentBrand}
         </strong>{" "}
-        (<Tbc>contact enquiry retention period</Tbc>), and the published policy
+        (<Fact value={legalInfo.contactFormRetention} label="contact enquiry retention period" />), and the published policy
         must state a period we actually follow. Information held by Web3Forms is
         retained according to their schedule, not ours.
       </p>
@@ -324,13 +330,13 @@ export default function PrivacyPolicyPage() {
       <h2 id="contact">Contacting us about privacy</h2>
       <p>
         For any privacy question or request, contact us at{" "}
-        <Tbc>privacy contact email address</Tbc>, or write to us at{" "}
-        <Tbc>registered business address</Tbc>. You can also reach us through
+        <Fact value={legalInfo.privacyEmail} label="privacy contact email address" />, or write to us at{" "}
+        <Fact value={legalInfo.registeredAddress} label="registered business address" />. You can also reach us through
         our <Link href="/contact">contact form</Link>.
       </p>
       <p>
         Whether we are required to appoint a data protection officer or a local
-        representative is <Tbc>DPO / representative requirement</Tbc>.
+        representative is <Fact value={legalInfo.dpoRequirement} label="DPO / representative requirement" />.
       </p>
 
       <h2 id="changes">Changes to this policy</h2>

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Section } from "@/components/ui/Section";
 import { Eyebrow } from "@/components/ui/Badge";
 import { LegalToc } from "./LegalToc";
-import { legalLastUpdated } from "@/data/legal";
+import { legalLastUpdated, type LegalFact } from "@/data/legal";
 
 export type LegalSection = { id: string; title: string };
 
@@ -18,6 +18,15 @@ export function Tbc({ children }: { children: string }) {
       [To confirm: {children}]
     </mark>
   );
+}
+
+/**
+ * A business fact from `legalInfo`, or its "to confirm" marker while the value
+ * is still empty. Pages render facts only through this, so filling a value in
+ * src/data/legal.ts updates every page that states it.
+ */
+export function Fact({ value, label }: { value: LegalFact; label: string }) {
+  return value?.trim() ? <>{value}</> : <Tbc>{label}</Tbc>;
 }
 
 /**

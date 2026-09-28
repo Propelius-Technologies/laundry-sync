@@ -18,16 +18,43 @@ export const legalInfo = {
   brand: "LaundrySync",
   parentBrand: "Propelius",
 
-  /** Not present anywhere in the project - require confirmation. */
+  /*
+   * Not present anywhere in the project - require confirmation. The pages
+   * render each through <Fact>, which shows the value once it is set here and
+   * a "[To confirm: ...]" marker until then.
+   */
   legalEntityName: null as LegalFact,
   registeredAddress: null as LegalFact,
+  /** The operating jurisdiction that decides the data protection regime. */
   jurisdiction: null as LegalFact,
   websiteDomain: null as LegalFact,
   generalEmail: null as LegalFact,
   privacyEmail: null as LegalFact,
+  /** Hosting provider and region, e.g. "Vercel Inc., US (iad1)". */
   hostingProvider: null as LegalFact,
+  /** How long contact-form enquiries are kept. */
   contactFormRetention: null as LegalFact,
+  /** Web3Forms retention period, data location, sub-processors and DPA terms. */
+  web3formsTerms: null as LegalFact,
+  /** Transfer destinations and the safeguard relied on for each provider. */
+  transferSafeguards: null as LegalFact,
+  /** Whether a DPO or local representative must be appointed. */
+  dpoRequirement: null as LegalFact,
+  /** Governing law and the courts with jurisdiction over disputes. */
+  governingLaw: null as LegalFact,
+  /** How long the hosting provider keeps server logs. */
+  hostingLogRetention: null as LegalFact,
+  /** Observed expiry of each Clarity cookie group. */
+  clarityCookieDurations: {
+    clck: null as LegalFact,
+    clsk: null as LegalFact,
+    microsoft: null as LegalFact,
+  },
 } as const;
+
+/** Shown in the cookie table until a Clarity duration is confirmed. */
+const clarityDurationTbc =
+  "Not published in Microsoft's cookie list — to be confirmed";
 
 /**
  * Publication date. Null while these remain unapproved drafts - the pages show
@@ -87,7 +114,8 @@ export const storageInventory = [
     purpose:
       "Persists the Clarity user ID and preferences, so interactions on this site are attributed to the same pseudonymous user.",
     category: "Optional analytics",
-    duration: "Not published in Microsoft's cookie list — to be confirmed",
+    duration:
+      legalInfo.clarityCookieDurations.clck || clarityDurationTbc,
     consentRequired: "Yes",
   },
   {
@@ -97,7 +125,8 @@ export const storageInventory = [
     purpose:
       "Connects multiple page views by one visitor into a single Clarity session recording.",
     category: "Optional analytics",
-    duration: "Not published in Microsoft's cookie list — to be confirmed",
+    duration:
+      legalInfo.clarityCookieDurations.clsk || clarityDurationTbc,
     consentRequired: "Yes",
   },
   {
@@ -107,7 +136,8 @@ export const storageInventory = [
     purpose:
       "Microsoft's own identifiers, used to recognise a browser across sites that use Clarity and to synchronise that identifier between Microsoft domains.",
     category: "Optional analytics",
-    duration: "Not published in Microsoft's cookie list — to be confirmed",
+    duration:
+      legalInfo.clarityCookieDurations.microsoft || clarityDurationTbc,
     consentRequired: "Yes",
   },
 ] as const;

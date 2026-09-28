@@ -1,7 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import { legalPagesApproved } from "@/lib/site-config";
 import Link from "next/link";
-import { LegalPage, Tbc, type LegalSection } from "@/components/legal/LegalPage";
+import { LegalPage, Fact, type LegalSection } from "@/components/legal/LegalPage";
 import { legalInfo } from "@/data/legal";
 
 export const metadata = pageMetadata({
@@ -44,7 +44,7 @@ export default function TermsOfUsePage() {
     >
       <h2 id="about">About these terms</h2>
       <p>
-        This website is operated by <Tbc>registered legal entity name</Tbc>,
+        This website is operated by <Fact value={legalInfo.legalEntityName} label="registered legal entity name" />,
         trading as {legalInfo.parentBrand}. By using it, you accept these terms.
         If you do not accept them, please do not use the website.
       </p>
@@ -126,7 +126,7 @@ export default function TermsOfUsePage() {
       <p>
         Unless stated otherwise, the content, design, layout, graphics and code
         of this website are owned by, or licensed to,{" "}
-        <Tbc>registered legal entity name</Tbc>. The {legalInfo.brand} and{" "}
+        <Fact value={legalInfo.legalEntityName} label="registered legal entity name" />. The {legalInfo.brand} and{" "}
         {legalInfo.parentBrand} names, logos and brand materials belong to us
         and may not be used without our permission.
       </p>
@@ -229,7 +229,7 @@ export default function TermsOfUsePage() {
       <h2 id="law">Governing law</h2>
       <p>
         These terms are governed by the laws of{" "}
-        <Tbc>governing law and jurisdiction for disputes</Tbc>, and the courts
+        <Fact value={legalInfo.governingLaw} label="governing law and jurisdiction for disputes" />, and the courts
         of that jurisdiction have exclusive jurisdiction over disputes arising
         from them.
       </p>
@@ -251,7 +251,7 @@ export default function TermsOfUsePage() {
       <h2 id="contact">Contact</h2>
       <p>
         Questions about these terms can be sent to{" "}
-        <Tbc>general business contact email</Tbc> or through our{" "}
+        <Fact value={legalInfo.generalEmail} label="general business contact email" /> or through our{" "}
         <Link href="/contact">contact form</Link>.
       </p>
     </LegalPage>

@@ -1,7 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import { legalPagesApproved } from "@/lib/site-config";
 import Link from "next/link";
-import { LegalPage, Tbc, type LegalSection } from "@/components/legal/LegalPage";
+import { LegalPage, Fact, type LegalSection } from "@/components/legal/LegalPage";
 import { CookiePreferencesButton } from "@/components/consent/CookiePreferencesButton";
 import { legalInfo, storageInventory } from "@/data/legal";
 
@@ -179,7 +179,7 @@ export default function CookiePolicyPage() {
         Our hosting provider may also process server logs in order to serve and
         protect the website. These are not set through your browser by this
         site; the details are{" "}
-        <Tbc>hosting provider log retention</Tbc>.
+        <Fact value={legalInfo.hostingLogRetention} label="hosting provider log retention" />.
       </p>
 
       <h2 id="controls">Your choices</h2>
@@ -240,7 +240,7 @@ export default function CookiePolicyPage() {
       <h2 id="contact">Contact</h2>
       <p>
         Questions about this policy can be sent to{" "}
-        <Tbc>privacy contact email address</Tbc>, or through our{" "}
+        <Fact value={legalInfo.privacyEmail} label="privacy contact email address" />, or through our{" "}
         <Link href="/contact">contact form</Link>. {legalInfo.brand} is a
         product of {legalInfo.parentBrand}. See also our{" "}
         <Link href="/privacy-policy">Privacy Policy</Link>.
