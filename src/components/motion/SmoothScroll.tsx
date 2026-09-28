@@ -24,18 +24,15 @@ import type { ReactNode } from "react";
  *   whole effect disappears for anyone who has asked for less motion, which
  *   matches how the rest of the site behaves.
  *
- * - `anchors` with a negative offset so in-page links (`/#features`, the legal
- *   table of contents) glide to their target and still clear the sticky
- *   header. It mirrors the `scroll-margin-top: 6rem` rule in globals.css,
- *   which the browser applies to native anchor jumps but Lenis's own
- *   `scrollTo` does not.
+ * - `anchors` on, with no offset, so in-page links (`/#features`, the legal
+ *   table of contents) glide to their target. Lenis's `scrollTo` already
+ *   subtracts the target's `scroll-margin-top` (6rem in globals.css), the same
+ *   rule native anchor jumps use to clear the sticky header. An offset here
+ *   as well would apply that clearance twice.
  *
  * Nested scrollers opt out with `data-lenis-prevent`; see the cookie
  * preferences dialog and the mobile menu panel.
  */
-
-/** Matches `scroll-margin-top: 6rem` in globals.css. Negative = stop above. */
-const HEADER_OFFSET = -96;
 
 export function SmoothScroll({ children }: { children: ReactNode }) {
   return (
@@ -49,7 +46,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
          */
         lerp: 0.1,
         smoothWheel: true,
-        anchors: { offset: HEADER_OFFSET },
+        anchors: true,
         /* Lenis runs its own rAF loop; nothing else needs to drive it. */
         autoRaf: true,
       }}
