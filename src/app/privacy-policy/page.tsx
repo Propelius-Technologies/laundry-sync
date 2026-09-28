@@ -238,7 +238,8 @@ export default function PrivacyPolicyPage() {
 
       <h2 id="cookies">Cookies and similar storage</h2>
       <p>
-        This website currently sets no cookies. It stores one item in your
+        This website sets no cookies unless you accept optional analytics
+        cookies. It stores one item in your
         browser&rsquo;s local storage to remember your cookie choice. Full
         details, including how to change or withdraw your choice, are in our{" "}
         <Link href="/cookie-policy">Cookie Policy</Link>.
