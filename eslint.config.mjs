@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Throwaway audit and test scripts; never part of the site.
+    ".audit-scratch/**",
   ]),
 ]);
 
