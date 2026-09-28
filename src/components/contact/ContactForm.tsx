@@ -206,6 +206,16 @@ export function ContactForm() {
   const captchaRef = useRef<HTMLDivElement>(null);
   const captchaIdRef = useRef<string | null>(null);
 
+  /*
+   * hCaptcha's script is heavy and sets a third-party cookie. Loading it with
+   * the page delayed the entrance animations that reveal it (mobile LCP
+   * 3.3s -> 6.3s) and cost Best Practices, so it loads on the first sign of
+   * use instead: focus, input (browser autofill can fill fields without
+   * focusing them) or a pointer press inside the form. A submit that still
+   * arrives first loads it too, and asks for the verification; see submit().
+   */
+  const [captchaWanted, setCaptchaWanted] = useState(false);
+
   useEffect(() => {
     const name = pendingFocusRef.current;
     if (!name) return;
@@ -246,6 +256,12 @@ export function ContactForm() {
 
     if (Object.keys(nextErrors).length > 0) {
       setFormError(null);
+      /*
+       * No token can also mean the widget has not loaded yet (a submit with
+       * no earlier focus, input or press). Load it now; the values stay in
+       * the fields and the visitor is asked to complete it.
+       */
+      if (nextErrors.captcha) setCaptchaWanted(true);
       // Focused by the effect below, once the error text is in the DOM.
       pendingFocusRef.current = Object.keys(nextErrors)[0];
       return false;
@@ -357,6 +373,9 @@ export function ContactForm() {
       <form
         ref={formRef}
         onSubmit={onSubmit}
+        onFocus={() => setCaptchaWanted(true)}
+        onInput={() => setCaptchaWanted(true)}
+        onPointerDown={() => setCaptchaWanted(true)}
         noValidate
         className="mt-7"
         data-clarity-mask="True"
@@ -487,8 +506,10 @@ export function ContactForm() {
           </p>
         </div>
 
-        {/* Spam check. Loaded on this page only, via this component. */}
-        <Script src={HCAPTCHA_SRC} strategy="afterInteractive" />
+        {/* Spam check. Loaded on this page only, and only when needed. */}
+        {captchaWanted && (
+          <Script src={HCAPTCHA_SRC} strategy="afterInteractive" />
+        )}
         <div className="mt-5">
           {/* tabIndex -1: the error summary link focuses here. */}
           <div
