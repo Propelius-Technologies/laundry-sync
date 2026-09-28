@@ -30,9 +30,11 @@ export function BusinessAdminIllustration({
     /*
       min-h reserves the space the detail row will need, so expanding it
       neither shifts the layout nor pushes the panel past the card's clip.
+      7.75rem is the measured expanded height (6.5rem left it 20px short,
+      so every section below moved while the card played).
     */
     <motion.div
-      className="min-h-[6.5rem] w-full"
+      className="min-h-[7.75rem] w-full"
       initial={false}
       animate={live ? { y: -12 } : { y: 0 }}
       transition={{ duration: 0.4, ease: easeOut }}

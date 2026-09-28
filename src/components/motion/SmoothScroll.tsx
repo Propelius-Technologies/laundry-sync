@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactLenis } from "lenis/react";
-import type { ReactNode } from "react";
+import { useSyncExternalStore, type ReactNode } from "react";
 
 /**
  * Site-wide smooth (inertial) scrolling.
@@ -34,7 +34,54 @@ import type { ReactNode } from "react";
  * preferences dialog and the mobile menu panel.
  */
 
+/** Anchor glide on touch devices: fixed-length, so it always lands in < 1s. */
+const TOUCH_ANCHOR_DURATION = 0.6;
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+const COARSE = "(pointer: coarse)";
+const REDUCED = "(prefers-reduced-motion: reduce)";
+
+type AnchorMode = "default" | "touch" | "reduced";
+
+function subscribeAnchorMode(onChange: () => void) {
+  const queries = [COARSE, REDUCED].map((query) => window.matchMedia(query));
+  queries.forEach((query) => query.addEventListener("change", onChange));
+  return () =>
+    queries.forEach((query) => query.removeEventListener("change", onChange));
+}
+
+function getAnchorMode(): AnchorMode {
+  if (window.matchMedia(REDUCED).matches) return "reduced";
+  if (window.matchMedia(COARSE).matches) return "touch";
+  return "default";
+}
+
+/**
+ * How in-page anchor links scroll, per device:
+ *
+ * - Desktop: Lenis's default lerp glide, unchanged.
+ * - Touch (`pointer: coarse`): the lerp glide's long tail made long jumps
+ *   take seconds to settle, so they use a fixed 0.6s eased scroll instead.
+ * - Reduced motion: an instant jump.
+ *
+ * No offset in any case - `scroll-margin-top` still sets the 96px landing.
+ * The server snapshot is the desktop default; a changed mode re-creates the
+ * Lenis instance once, straight after hydration.
+ */
+function anchorOptions(mode: AnchorMode) {
+  if (mode === "reduced") return { immediate: true };
+  if (mode === "touch")
+    return { duration: TOUCH_ANCHOR_DURATION, easing: easeOutCubic };
+  return true;
+}
+
 export function SmoothScroll({ children }: { children: ReactNode }) {
+  const anchorMode = useSyncExternalStore(
+    subscribeAnchorMode,
+    getAnchorMode,
+    () => "default" as const,
+  );
+
   return (
     <ReactLenis
       root
@@ -46,7 +93,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
          */
         lerp: 0.1,
         smoothWheel: true,
-        anchors: true,
+        anchors: anchorOptions(anchorMode),
         /* Lenis runs its own rAF loop; nothing else needs to drive it. */
         autoRaf: true,
       }}

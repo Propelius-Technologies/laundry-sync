@@ -29,7 +29,16 @@ export function DryCleaningPreview({
   const live = active && !reduceMotion;
 
   return (
+    /*
+      Below lg the panels stack, and the open category (+59px) would push
+      everything under this section down while it plays - and leave it moved
+      if a fast scroll carried the panel out of view mid-demo, so in-page
+      anchors landed short. The min-height reserves the open size, with the
+      panel kept at the foot like the other previews. In the lg row the
+      tallest panel sets the height, so no reservation is needed there.
+    */
     <motion.div
+      className="flex min-h-[14.875rem] flex-col justify-end lg:block lg:min-h-0"
       initial={false}
       animate={live ? { y: -6 } : { y: 0 }}
       transition={{ duration: 0.35, ease: easeOut }}
