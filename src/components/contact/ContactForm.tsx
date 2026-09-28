@@ -11,6 +11,39 @@ import { easeOut } from "@/components/motion/motion-tokens";
 
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 const MESSAGE_MAX = 1000;
+const NAME_MAX = 100;
+const PHONE_MAX = 20;
+
+/*
+ * Letters from any script, plus the combining marks many scripts need
+ * (Devanagari vowel signs, for one), spaces, apostrophes (straight and the
+ * curly one phone keyboards insert), hyphens and periods. At least one letter.
+ */
+const NAME_PATTERN = /^(?=.*\p{L})[\p{L}\p{M}\s'’.-]+$/u;
+
+/* Optional "+" first, then digits, spaces, brackets and hyphens only. */
+const PHONE_PATTERN = /^\+?[\d\s()-]+$/;
+
+/** E.164 allows at most 15 digits; below 7 is not a reachable number. */
+function isValidPhone(phone: string) {
+  if (!PHONE_PATTERN.test(phone)) return false;
+  const digits = phone.replace(/\D/g, "").length;
+  return digits >= 7 && digits <= 15;
+}
+
+function isValidEmail(email: string) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return false;
+  const at = email.lastIndexOf("@");
+  const local = email.slice(0, at);
+  const domain = email.slice(at + 1);
+  return !(
+    email.includes("..") ||
+    local.startsWith(".") ||
+    local.endsWith(".") ||
+    domain.startsWith(".") ||
+    domain.endsWith(".")
+  );
+}
 
 const businessTypes = [
   "Independent laundry",
@@ -26,15 +59,29 @@ function validate(data: FormData): Errors {
   const errors: Errors = {};
   const value = (key: string) => String(data.get(key) ?? "").trim();
 
-  if (!value("name")) errors.name = "Please enter your name.";
+  const name = value("name");
+  if (!name) {
+    errors.name = "Please enter your name.";
+  } else if (name.length > NAME_MAX) {
+    errors.name = `Please keep your name to ${NAME_MAX} characters or fewer.`;
+  } else if (!NAME_PATTERN.test(name)) {
+    errors.name = "Please enter a name using letters only.";
+  }
+
   if (!value("business_name"))
     errors.business_name = "Please enter your business name.";
 
   const email = value("email");
   if (!email) {
     errors.email = "Please enter your work email.";
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+  } else if (!isValidEmail(email)) {
     errors.email = "Please enter a valid email address.";
+  }
+
+  // Optional: only checked when something was entered.
+  const phone = value("phone");
+  if (phone && !isValidPhone(phone)) {
+    errors.phone = "Please enter a valid phone number, 7–15 digits.";
   }
 
   if (!value("country")) errors.country = "Please enter your country or region.";
@@ -209,6 +256,7 @@ export function ContactForm() {
             name="name"
             label="Full name"
             autoComplete="name"
+            maxLength={NAME_MAX}
             required
             disabled={sending}
             error={errors.name}
@@ -234,7 +282,9 @@ export function ContactForm() {
             name="phone"
             label="Phone number"
             type="tel"
+            inputMode="tel"
             autoComplete="tel"
+            maxLength={PHONE_MAX}
             disabled={sending}
             error={errors.phone}
           />

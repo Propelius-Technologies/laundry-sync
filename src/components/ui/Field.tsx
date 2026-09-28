@@ -31,7 +31,12 @@ type BaseProps = {
 };
 
 type FieldProps =
-  | (BaseProps & { as?: "input"; type?: string })
+  | (BaseProps & {
+      as?: "input";
+      type?: string;
+      maxLength?: number;
+      inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
+    })
   | (BaseProps & { as: "textarea"; rows?: number; maxLength?: number })
   | (BaseProps & { as: "select"; options: string[] });
 
@@ -117,6 +122,8 @@ export function Field(props: FieldProps) {
         <input
           {...shared}
           type={props.type ?? "text"}
+          maxLength={props.maxLength}
+          inputMode={props.inputMode}
           autoComplete={props.autoComplete}
           placeholder={props.placeholder}
           className={cn(shared.className, "h-11")}
