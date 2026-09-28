@@ -14,13 +14,17 @@ import type { NextConfig } from "next";
  * - Clarity loads from www.clarity.ms and scripts.clarity.ms, reports to
  *   *.clarity.ms, and syncs its ID through c.bing.com.
  * - Web3Forms receives the contact form, posted straight from the browser.
+ * - hCaptcha (the contact form's spam check, via Web3Forms) loads its script
+ *   from js.hcaptcha.com and runs the challenge in an hcaptcha.com iframe,
+ *   which also fetches its own styles and data. Only /contact loads it.
  */
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.clarity.ms https://*.clarity.ms",
-  "connect-src 'self' https://api.web3forms.com https://*.clarity.ms https://c.bing.com",
+  "script-src 'self' 'unsafe-inline' https://www.clarity.ms https://*.clarity.ms https://hcaptcha.com https://*.hcaptcha.com",
+  "connect-src 'self' https://api.web3forms.com https://*.clarity.ms https://c.bing.com https://hcaptcha.com https://*.hcaptcha.com",
   "img-src 'self' data: https://*.clarity.ms https://c.bing.com",
-  "style-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com",
+  "frame-src https://hcaptcha.com https://*.hcaptcha.com",
   "font-src 'self'",
   "frame-ancestors 'none'",
 ].join("; ");

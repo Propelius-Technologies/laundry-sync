@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Script from "next/script";
 import { useRouter } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import { Field } from "@/components/ui/Field";
@@ -13,6 +14,49 @@ import { CountryCombobox, findCountry } from "./CountryCombobox";
 
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 const MESSAGE_MAX = 1000;
+
+/**
+ * hCaptcha, through Web3Forms' free integration: Web3Forms verifies the
+ * `h-captcha-response` token the widget adds to the form. This is Web3Forms'
+ * shared public site key for the free plan, the one their own client script
+ * uses. The widget is rendered explicitly rather than through that script so
+ * it also renders when /contact is reached by client-side navigation.
+ */
+const HCAPTCHA_SITEKEY = "50b2fe65-b00b-4b9e-ad62-3ba471098be2";
+/*
+ * hCaptcha calls the global named in `onload` once its API is fully ready -
+ * later than the script element's own load event, which is too early to
+ * render. The flag covers forms that mount after that has happened.
+ */
+const HCAPTCHA_ONLOAD = "lsHCaptchaReady";
+const HCAPTCHA_READY_EVENT = "ls-hcaptcha-ready";
+const HCAPTCHA_SRC = `https://js.hcaptcha.com/1/api.js?render=explicit&recaptchacompat=off&onload=${HCAPTCHA_ONLOAD}`;
+/** Below this container width the normal widget (303px) would overflow. */
+const HCAPTCHA_NORMAL_WIDTH = 303;
+
+type HCaptcha = {
+  render: (container: HTMLElement, options: Record<string, unknown>) => string;
+  reset: (widgetId?: string) => void;
+  remove: (widgetId?: string) => void;
+};
+
+type HCaptchaWindow = Window & {
+  hcaptcha?: HCaptcha;
+  lsHCaptchaReady?: () => void;
+  lsHCaptchaIsReady?: boolean;
+};
+
+function getHCaptcha(): HCaptcha | undefined {
+  return (window as HCaptchaWindow).hcaptcha;
+}
+
+if (typeof window !== "undefined") {
+  (window as HCaptchaWindow)[HCAPTCHA_ONLOAD] = () => {
+    (window as HCaptchaWindow).lsHCaptchaIsReady = true;
+    window.dispatchEvent(new Event(HCAPTCHA_READY_EVENT));
+  };
+}
+
 const NAME_MAX = 100;
 const PHONE_MAX = 20;
 
@@ -99,7 +143,16 @@ function validate(data: FormData): Errors {
     errors.message = `Please keep your message under ${MESSAGE_MAX} characters.`;
   }
 
+  // The widget writes its token into this field once it is solved.
+  if (!value("h-captcha-response"))
+    errors.captcha = "Please complete the verification.";
+
   return errors;
+}
+
+/** Every error key is the id of the element to focus for it. */
+function focusField(form: HTMLFormElement | null, name: string) {
+  form?.querySelector<HTMLElement>(`#${name}`)?.focus();
 }
 
 /**
@@ -150,11 +203,14 @@ export function ContactForm() {
    */
   const pendingFocusRef = useRef<string | null>(null);
 
+  const captchaRef = useRef<HTMLDivElement>(null);
+  const captchaIdRef = useRef<string | null>(null);
+
   useEffect(() => {
     const name = pendingFocusRef.current;
     if (!name) return;
     pendingFocusRef.current = null;
-    formRef.current?.querySelector<HTMLElement>(`[name="${name}"]`)?.focus();
+    focusField(formRef.current, name);
   }, [errors]);
 
   const errorEntries = Object.entries(errors).filter(
@@ -239,9 +295,37 @@ export function ContactForm() {
         "Something went wrong sending your message. Please check your connection and try again.",
       );
       setStatus("error");
+      // A token is single-use; the visitor needs a fresh one to retry.
+      if (captchaIdRef.current) getHCaptcha()?.reset(captchaIdRef.current);
       return false;
     }
   }
+
+  /*
+   * Render the widget once hCaptcha is ready - now, if an earlier visit
+   * already loaded it, or when its onload fires. Removed on unmount, so a
+   * client-side return to /contact renders a fresh one.
+   */
+  useEffect(() => {
+    const render = () => {
+      const hcaptcha = getHCaptcha();
+      const container = captchaRef.current;
+      if (!hcaptcha || !container || captchaIdRef.current) return;
+      captchaIdRef.current = hcaptcha.render(container, {
+        sitekey: HCAPTCHA_SITEKEY,
+        size:
+          container.offsetWidth < HCAPTCHA_NORMAL_WIDTH ? "compact" : "normal",
+      });
+    };
+
+    if ((window as HCaptchaWindow).lsHCaptchaIsReady) render();
+    window.addEventListener(HCAPTCHA_READY_EVENT, render);
+    return () => {
+      window.removeEventListener(HCAPTCHA_READY_EVENT, render);
+      if (captchaIdRef.current) getHCaptcha()?.remove(captchaIdRef.current);
+      captchaIdRef.current = null;
+    };
+  }, []);
 
   return (
     <motion.div
@@ -296,9 +380,7 @@ export function ContactForm() {
                     href={`#${name}`}
                     onClick={(event) => {
                       event.preventDefault();
-                      formRef.current
-                        ?.querySelector<HTMLElement>(`[name="${name}"]`)
-                        ?.focus();
+                      focusField(formRef.current, name);
                     }}
                     className="underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-focus-ring)"
                   >
@@ -403,6 +485,24 @@ export function ContactForm() {
           <p className="mt-1.5 text-right text-caption text-ls-muted">
             {messageCount} / {MESSAGE_MAX}
           </p>
+        </div>
+
+        {/* Spam check. Loaded on this page only, via this component. */}
+        <Script src={HCAPTCHA_SRC} strategy="afterInteractive" />
+        <div className="mt-5">
+          {/* tabIndex -1: the error summary link focuses here. */}
+          <div
+            id="captcha"
+            ref={captchaRef}
+            tabIndex={-1}
+            aria-describedby={errors.captcha ? "captcha-error" : undefined}
+            className="min-h-[78px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-focus-ring)"
+          />
+          {errors.captcha && (
+            <p id="captcha-error" className="mt-1.5 text-caption text-ls-error">
+              {errors.captcha}
+            </p>
+          )}
         </div>
 
         {/* Submission failures are announced, not just shown */}

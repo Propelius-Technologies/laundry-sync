@@ -78,6 +78,14 @@ export const verifiedProcessors = [
     detail:
       "The form posts directly from the visitor's browser to Web3Forms, which forwards the enquiry to our notification inbox.",
   },
+  {
+    name: "hCaptcha",
+    role: "Protects the contact form from spam and automated abuse",
+    // Already said in `detail`, so the page adds no "(when ...)" suffix.
+    when: null,
+    detail:
+      "Loads only on the contact page and processes technical information about your browser and interaction to tell people from bots.",
+  },
 ] as const;
 
 /**

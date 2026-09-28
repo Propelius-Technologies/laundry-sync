@@ -194,7 +194,8 @@ export default function PrivacyPolicyPage() {
         {verifiedProcessors.map((processor) => (
           <li key={processor.name}>
             <strong>{processor.name}</strong> &mdash; {processor.role}.{" "}
-            {processor.detail} ({processor.when.toLowerCase()}).
+            {processor.detail}
+            {processor.when && ` (${processor.when.toLowerCase()}).`}
           </li>
         ))}
         <li>
