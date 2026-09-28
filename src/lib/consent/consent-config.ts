@@ -26,33 +26,37 @@ export const CONSENT_MAX_AGE_MONTHS = 6;
 export const DEFAULT_CATEGORIES: ConsentCategories = { analytics: false };
 
 /**
- * The Microsoft Clarity project this site reports to.
+ * Whether this build may load analytics at all, consent aside.
  *
- * Held in source rather than only in an env file, for two reasons:
+ * Only production reports, so local, dev and preview builds never send test
+ * sessions to the live projects:
  *
- * 1. A Clarity project ID is not a secret. It ships inside the tag URL and is
- *    readable by every visitor in the page source - unlike the Web3Forms key,
- *    there is nothing to protect.
- * 2. `.gitignore` ignores `.env*`, so an env-only value would never reach a
- *    deployment and Clarity would silently never load in production.
- *
- * NEXT_PUBLIC_CLARITY_PROJECT_ID still overrides it, so a staging deployment
- * can point at a different project, and setting it to an empty string turns
- * Clarity off entirely.
+ * - NEXT_PUBLIC_VERCEL_ENV is "production" on Vercel production builds
+ *   (Vercel exposes it when system environment variables are enabled).
+ * - NEXT_PUBLIC_ANALYTICS_ENABLED="true" opts any other build in explicitly,
+ *   e.g. to test the integration locally or on a staging project.
  */
-const CLARITY_PROJECT_ID = "ymplhrn7yv";
+export const analyticsEnabled =
+  process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ||
+  process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === "true";
 
 /**
- * Analytics provider IDs.
+ * Analytics provider IDs, read only from the environment - there is no
+ * fallback in source. Set NEXT_PUBLIC_CLARITY_PROJECT_ID (and
+ * NEXT_PUBLIC_GA4_MEASUREMENT_ID if GA4 is ever added) in the Vercel
+ * Production environment.
  *
- * GA4 remains unconfigured - no measurement ID exists yet - so nothing Google
- * loads regardless of consent. Clarity is configured. Neither loads until a
- * visitor actively opts in; see AnalyticsLoader.
+ * Null when this build is not allowed to load analytics, so nothing
+ * downstream can load a provider by accident. Even when set, neither loads
+ * until a visitor actively opts in; see AnalyticsLoader.
  */
 export const analyticsConfig = {
-  ga4MeasurementId: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID ?? null,
-  clarityProjectId:
-    process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID ?? CLARITY_PROJECT_ID,
+  ga4MeasurementId: analyticsEnabled
+    ? process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || null
+    : null,
+  clarityProjectId: analyticsEnabled
+    ? process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID || null
+    : null,
 } as const;
 
 export const analyticsConfigured = Boolean(

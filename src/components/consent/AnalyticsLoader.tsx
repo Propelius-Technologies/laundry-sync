@@ -5,6 +5,7 @@ import { useConsent } from "./ConsentProvider";
 import {
   analyticsConfig,
   analyticsConfigured,
+  analyticsEnabled,
 } from "@/lib/consent/consent-config";
 import { MicrosoftClarity } from "@/components/analytics/MicrosoftClarity";
 
@@ -16,8 +17,10 @@ import { MicrosoftClarity } from "@/components/analytics/MicrosoftClarity";
  * "denied" bootstrap call - if a visitor has not opted in, no analytics
  * request is made at all.
  *
- * Microsoft Clarity is configured; GA4 is not, so nothing Google loads either
- * way until a measurement ID exists.
+ * Two conditions must both hold: the visitor opted in, and this build is
+ * allowed to report (`analyticsEnabled` - production, or an explicit opt-in).
+ * The same gate covers Clarity and GA4. GA4 has no measurement ID yet, so
+ * nothing Google loads either way.
  *
  * Rendering is keyed off `status === "decided"`, and next/script dedupes by
  * id, so neither provider can be injected twice. This component is mounted
@@ -30,7 +33,7 @@ export function AnalyticsLoader() {
   const { status, categories } = useConsent();
 
   const allowed = status === "decided" && categories.analytics;
-  if (!allowed || !analyticsConfigured) return null;
+  if (!allowed || !analyticsEnabled || !analyticsConfigured) return null;
 
   const { ga4MeasurementId, clarityProjectId } = analyticsConfig;
 
