@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
@@ -134,6 +134,24 @@ export function ContactForm() {
    */
   const submittingRef = useRef(false);
 
+  /*
+   * The field to focus after a failed validation. Focusing in the same tick as
+   * setErrors would land before aria-describedby and the message render, so a
+   * screen reader could announce the field without its error.
+   */
+  const pendingFocusRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    const name = pendingFocusRef.current;
+    if (!name) return;
+    pendingFocusRef.current = null;
+    formRef.current?.querySelector<HTMLElement>(`[name="${name}"]`)?.focus();
+  }, [errors]);
+
+  const errorEntries = Object.entries(errors).filter(
+    (entry): entry is [string, string] => Boolean(entry[1]),
+  );
+
   const sending = status === "sending";
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -163,8 +181,8 @@ export function ContactForm() {
 
     if (Object.keys(nextErrors).length > 0) {
       setFormError(null);
-      const firstInvalid = Object.keys(nextErrors)[0];
-      form.querySelector<HTMLElement>(`[name="${firstInvalid}"]`)?.focus();
+      // Focused by the effect below, once the error text is in the DOM.
+      pendingFocusRef.current = Object.keys(nextErrors)[0];
       return false;
     }
 
@@ -239,6 +257,39 @@ export function ContactForm() {
         className="mt-7"
         data-clarity-mask="True"
       >
+        {/*
+          Error summary: announced as a whole, and each entry jumps to its
+          field. Inside the form so the Clarity mask covers it too.
+        */}
+        {errorEntries.length > 0 && (
+          <div
+            role="alert"
+            className="mb-6 rounded-ls-md border border-ls-error/30 bg-ls-error/5 px-4 py-3 text-body-sm text-ls-error"
+          >
+            <p className="font-semibold">
+              Please fix the following before sending:
+            </p>
+            <ul className="mt-2 list-disc space-y-1 pl-5">
+              {errorEntries.map(([name, message]) => (
+                <li key={name}>
+                  <a
+                    href={`#${name}`}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      formRef.current
+                        ?.querySelector<HTMLElement>(`[name="${name}"]`)
+                        ?.focus();
+                    }}
+                    className="underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-focus-ring)"
+                  >
+                    {message}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {/* Honeypot - hidden from view and from keyboard navigation */}
         <div aria-hidden="true" className="sr-only">
           <label htmlFor="botcheck">Leave this field empty</label>
