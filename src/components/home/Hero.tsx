@@ -94,7 +94,7 @@ export function Hero() {
             aria-label="How it works for your business"
             className="ls-animate mt-11 flex flex-col gap-4 sm:mt-14"
           >
-            {setupSteps.map(({ title, description, icon: Icon }, index) => (
+            {setupSteps.map(({ title, description, icon: Icon }) => (
               <li key={title} className="flex items-start gap-3">
                 <span
                   aria-hidden="true"
