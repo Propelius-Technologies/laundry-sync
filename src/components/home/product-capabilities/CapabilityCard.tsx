@@ -9,6 +9,7 @@ import type { ProductCapability } from "@/data/product-capabilities";
 import { scrollReveal } from "@/components/motion/motion-tokens";
 import { useDemoState } from "@/lib/use-demo-state";
 import { cn } from "@/lib/utils";
+import { MockupLink } from "@/components/ui/MockupLink";
 
 const illustrations = {
   "customer-experience": OrderingIllustration,
@@ -91,9 +92,11 @@ export function CapabilityCard({
         )}
       >
         {hasHover || reduceMotion ? (
-          <div aria-label={capability.illustrationLabel} role="img">
-            {illustration}
-          </div>
+          <MockupLink>
+            <div aria-label={capability.illustrationLabel} role="img">
+              {illustration}
+            </div>
+          </MockupLink>
         ) : (
           <button
             type="button"

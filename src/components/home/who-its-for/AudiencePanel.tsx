@@ -9,6 +9,7 @@ import type { Audience, AudienceId } from "@/data/target-audiences";
 import { scrollReveal } from "@/components/motion/motion-tokens";
 import { useDemoState } from "@/lib/use-demo-state";
 import { cn } from "@/lib/utils";
+import { MockupLink } from "@/components/ui/MockupLink";
 
 const previews = {
   "independent-laundries": IndependentLaundryPreview,
@@ -99,9 +100,11 @@ export function AudiencePanel({
       {/* Preview pinned to the panel foot so the three line up */}
       <div className="mt-auto pt-8">
         {hasHover || reduceMotion ? (
-          <div role="img" aria-label={audience.previewLabel}>
-            {preview}
-          </div>
+          <MockupLink>
+            <div role="img" aria-label={audience.previewLabel}>
+              {preview}
+            </div>
+          </MockupLink>
         ) : (
           <button
             type="button"

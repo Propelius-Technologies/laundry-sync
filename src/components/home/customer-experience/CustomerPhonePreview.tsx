@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { MobileMockup } from "@/components/devices/MobileMockup";
+import { MockupLink } from "@/components/ui/MockupLink";
 import { ServicesPreview } from "./screens/ServicesPreview";
 import { SelectServicesPreview } from "./screens/SelectServicesPreview";
 import { PickupSchedulingPreview } from "./screens/PickupSchedulingPreview";
@@ -119,26 +120,28 @@ export function CustomerPhonePreview({ screen }: { screen: PreviewScreen }) {
           whileHover={hoverEnabled ? { rotate: -1.6 } : undefined}
           transition={{ duration: 0.45, ease: easeOut }}
         >
-          <div role="img" aria-label={previewDescriptions[screen]}>
-            <MobileMockup>
-              {/*
-              Only the screen contents swap. mode="wait" means a fast click run
-              never leaves two screens stacked on top of each other.
-            */}
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={screen}
-                  className="absolute inset-0"
-                  initial={reduceMotion ? false : { opacity: 0, x: 14 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -14 }}
-                  transition={{ duration: 0.26, ease: easeOut }}
-                >
-                  <Screen />
-                </motion.div>
-              </AnimatePresence>
-            </MobileMockup>
-          </div>
+          <MockupLink className="rounded-[2.5rem]">
+            <div role="img" aria-label={previewDescriptions[screen]}>
+              <MobileMockup>
+                {/*
+                Only the screen contents swap. mode="wait" means a fast click run
+                never leaves two screens stacked on top of each other.
+              */}
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={screen}
+                    className="absolute inset-0"
+                    initial={reduceMotion ? false : { opacity: 0, x: 14 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -14 }}
+                    transition={{ duration: 0.26, ease: easeOut }}
+                  >
+                    <Screen />
+                  </motion.div>
+                </AnimatePresence>
+              </MobileMockup>
+            </div>
+          </MockupLink>
         </motion.div>
       </div>
     </motion.div>

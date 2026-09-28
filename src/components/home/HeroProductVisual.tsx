@@ -7,6 +7,7 @@ import { MobileMockup } from "@/components/devices/MobileMockup";
 import { OrdersDashboardScreen } from "@/components/home/screens/OrdersDashboardScreen";
 import { OrderStatusScreen } from "@/components/home/screens/OrderStatusScreen";
 import { HeroNotifications } from "@/components/home/HeroNotifications";
+import { MockupLink } from "@/components/ui/MockupLink";
 import {
   DEMO_STEP_MS,
   baseOrders,
@@ -79,47 +80,50 @@ export function HeroProductVisual() {
           className="pointer-events-none absolute -top-[9%] -right-[11%] -z-10 aspect-square w-[84%] rounded-full bg-[radial-gradient(circle_at_34%_32%,var(--color-ls-sky-100)_0%,var(--color-ls-sky-50)_50%,transparent_71%)]"
         />
 
-        <div
-          role="img"
-          aria-label={productVisualDescription}
-          className="relative"
-        >
-          <div className="relative pt-[13%] pr-[3%] pb-[9%] pl-[10%]">
-            <motion.div
-              className="ls-animate"
-              initial={{ opacity: 0, y: 26 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: duration.slow,
-                ease: easeOut,
-                delay: heroSequence.laptop,
-              }}
-            >
-              <LaptopMockup>
-                <OrdersDashboardScreen
-                  orders={orders}
-                  highlightId={showIncoming ? incomingOrder.id : undefined}
-                />
-              </LaptopMockup>
-            </motion.div>
+        {/* The link sits outside the role="img", never inside it. */}
+        <MockupLink>
+          <div
+            role="img"
+            aria-label={productVisualDescription}
+            className="relative"
+          >
+            <div className="relative pt-[13%] pr-[3%] pb-[9%] pl-[10%]">
+              <motion.div
+                className="ls-animate"
+                initial={{ opacity: 0, y: 26 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: duration.slow,
+                  ease: easeOut,
+                  delay: heroSequence.laptop,
+                }}
+              >
+                <LaptopMockup>
+                  <OrdersDashboardScreen
+                    orders={orders}
+                    highlightId={showIncoming ? incomingOrder.id : undefined}
+                  />
+                </LaptopMockup>
+              </motion.div>
 
-            <motion.div
-              className="ls-animate absolute bottom-0 left-0 w-[29%] max-w-[208px] sm:w-[26%]"
-              initial={{ opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: duration.base,
-                ease: easeOut,
-                delay: heroSequence.phone,
-              }}
-            >
-              <MobileMockup>
-                <OrderStatusScreen step={step} />
-              </MobileMockup>
-            </motion.div>
+              <motion.div
+                className="ls-animate absolute bottom-0 left-0 w-[29%] max-w-[208px] sm:w-[26%]"
+                initial={{ opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: duration.base,
+                  ease: easeOut,
+                  delay: heroSequence.phone,
+                }}
+              >
+                <MobileMockup>
+                  <OrderStatusScreen step={step} />
+                </MobileMockup>
+              </motion.div>
+            </div>
+            <HeroNotifications step={step} />
           </div>
-          <HeroNotifications step={step} />
-        </div>
+        </MockupLink>
       </div>
 
       <p className="mt-5 text-center text-caption text-ls-muted lg:mt-6">

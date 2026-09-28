@@ -10,6 +10,8 @@ import { adminModules } from "@/data/admin-preview";
 import { easeOut } from "@/components/motion/motion-tokens";
 import { useHasHover } from "@/lib/use-has-hover";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { demoHref } from "@/data/navigation";
 
 /**
  * The business-administration workspace preview.
@@ -134,13 +136,14 @@ export function BusinessAdminPreview() {
                 <Filter className="size-4" />
               </span>
 
-              <span
-                aria-hidden="true"
-                className="hidden items-center gap-1.5 rounded-ls-md bg-ls-navy px-3 py-2 text-body-sm font-semibold text-white lg:inline-flex"
+              <Link
+                href={demoHref}
+                className="hidden items-center gap-1.5 rounded-ls-md bg-ls-navy px-3 py-2 text-body-sm font-semibold text-white transition-colors duration-(--motion-normal) hover:bg-ls-navy-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-focus-ring) lg:inline-flex"
               >
-                <Plus className="size-4" />
+                <Plus aria-hidden="true" className="size-4" />
                 {activeModule.action}
-              </span>
+                <span className="sr-only"> (book a demo)</span>
+              </Link>
             </div>
           </div>
 

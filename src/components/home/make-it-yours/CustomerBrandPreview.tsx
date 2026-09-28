@@ -9,6 +9,8 @@ import { pickupSchedule, pickupSelection, pickupSlots } from "@/data/preview-ser
 import { useToday } from "@/lib/use-today";
 import { easeOut } from "@/components/motion/motion-tokens";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { demoHref } from "@/data/navigation";
 
 const serviceIcons = [Droplet, Sparkle];
 
@@ -123,14 +125,16 @@ export function CustomerBrandPreview({
             </ul>
 
             <div className="flex items-center gap-2">
-              <span
+              {/* This preview has real buttons, so the lookalike becomes the link. */}
+              <Link
+                href={demoHref}
                 data-brand-tinted
-                aria-hidden="true"
-                className="flex-1 rounded-ls-md px-3 py-2 text-center text-body-sm font-semibold text-(--preview-brand-foreground)"
+                className="flex-1 rounded-ls-md px-3 py-2 text-center text-body-sm font-semibold text-(--preview-brand-foreground) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-focus-ring)"
                 style={{ backgroundColor: "var(--preview-brand-strong)" }}
               >
                 {customerPreviewCopy.scheduleAction}
-              </span>
+                <span className="sr-only"> (book a demo)</span>
+              </Link>
               <button
                 type="button"
                 onClick={() => setScheduling(false)}
