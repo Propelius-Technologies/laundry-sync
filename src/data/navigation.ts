@@ -18,11 +18,17 @@ export const mainNav: NavItem[] = [
   { label: "FAQ", href: "/#faq" },
 ];
 
-export const headerCta: NavItem = { label: "Contact us", href: "/contact" };
+/**
+ * Demo requests go through the contact form. The query tells the form to
+ * send the inquiry as a demo request; the team follows up to schedule.
+ */
+export const demoHref = "/contact?intent=demo";
+
+export const headerCta: NavItem = { label: "Book a demo", href: demoHref };
 
 export const heroPrimaryCta: NavItem = {
-  label: "Talk to our team",
-  href: "/contact",
+  label: "Book a demo",
+  href: demoHref,
 };
 
 export const heroSecondaryCta: NavItem = {
@@ -44,6 +50,7 @@ export const footerExplore: NavItem[] = [
   { label: "Features", href: "/#features" },
   { label: "For businesses", href: "/#for-businesses" },
   { label: "Make it yours", href: "/#make-it-yours" },
+  { label: "Who it's for", href: "/#who-its-for" },
   { label: "FAQ", href: "/#faq" },
 ];
 

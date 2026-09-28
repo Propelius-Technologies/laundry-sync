@@ -6,6 +6,8 @@
  * implying a capability.
  */
 
+import { demoHref } from "./navigation";
+
 export type FaqEntry = {
   id: string;
   question: string;
@@ -49,5 +51,5 @@ export const faqAside = {
   supporting:
     "Have a more specific question about your existing process? We can discuss it with your team.",
   ctaLabel: "Ask us directly",
-  ctaHref: "/contact",
+  ctaHref: demoHref,
 };

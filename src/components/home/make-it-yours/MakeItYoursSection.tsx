@@ -18,6 +18,7 @@ import {
   type PreviewView,
 } from "@/data/brand-preview";
 import { scrollReveal } from "@/components/motion/motion-tokens";
+import { demoHref } from "@/data/navigation";
 import { cn } from "@/lib/utils";
 
 /**
@@ -113,7 +114,7 @@ export function MakeItYoursSection() {
 
           <motion.div {...reveal(0.42)} className="ls-animate mt-8">
             <Link
-              href="/contact"
+              href={demoHref}
               className={cn(
                 "group inline-flex items-center gap-2 border-b-2 border-ls-sky-200 pb-1.5 text-button font-semibold text-ls-navy",
                 "transition-colors duration-(--motion-normal) ease-(--motion-ease) hover:border-ls-blue hover:text-ls-blue",
