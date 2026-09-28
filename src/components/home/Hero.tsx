@@ -7,7 +7,6 @@ import {
   ArrowRight,
   ArrowUpRight,
   Calendar,
-  Check,
   ListIcon,
   Sparkle,
 } from "@/components/ui/Icons";
@@ -20,13 +19,7 @@ import {
   heroSequence,
 } from "@/components/motion/motion-tokens";
 
-const supportingPoints = [
-  "Built for laundry and dry-cleaning businesses.",
-  "Branded customer experience.",
-  "Orders, services and pickup scheduling.",
-];
-
-/** The business side in three steps, shown under the CTAs. */
+/** The business side in three steps, listed under the CTAs. */
 const setupSteps = [
   {
     title: "Set up your brand",
@@ -44,9 +37,6 @@ const setupSteps = [
     icon: ListIcon,
   },
 ];
-
-/** Enters between the CTAs and the supporting points. */
-const STEPS_DELAY = 0.38;
 
 /** Shared entrance: fade plus a short upward move, transform/opacity only. */
 function enter(delay: number, distance = 16) {
@@ -100,12 +90,12 @@ export function Hero() {
           </motion.div>
 
           <motion.ol
-            {...enter(STEPS_DELAY)}
+            {...enter(heroSequence.points)}
             aria-label="How it works for your business"
-            className="ls-animate mt-9 grid gap-4 border-t border-ls-border pt-6 sm:grid-cols-3 sm:gap-5"
+            className="ls-animate mt-11 flex flex-col gap-4 sm:mt-14"
           >
             {setupSteps.map(({ title, description, icon: Icon }, index) => (
-              <li key={title} className="flex items-start gap-3 sm:flex-col sm:gap-2.5">
+              <li key={title} className="flex items-start gap-3">
                 <span
                   aria-hidden="true"
                   className="grid size-8 shrink-0 place-items-center rounded-ls-md bg-ls-sky-100 text-ls-navy"
@@ -113,36 +103,19 @@ export function Hero() {
                   <Icon className="size-4" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-caption font-semibold tracking-[0.08em] text-ls-muted">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="mt-0.5 block text-body-sm font-semibold text-ls-ink">
+                  <span className="block text-body-sm font-semibold text-ls-ink">
+                    <span className="mr-2 text-caption tracking-[0.08em] text-ls-muted">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
                     {title}
                   </span>
-                  <span className="mt-0.5 block text-caption text-ls-muted">
+                  <span className="mt-0.5 block text-body-sm text-ls-text">
                     {description}
                   </span>
                 </span>
               </li>
             ))}
           </motion.ol>
-
-          <motion.ul
-            {...enter(heroSequence.points)}
-            className="ls-animate mt-11 flex flex-col gap-3.5 sm:mt-14"
-          >
-            {supportingPoints.map((point) => (
-              <li key={point} className="flex items-start gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-ls-pill bg-ls-sky-100 text-ls-navy"
-                >
-                  <Check className="size-3" strokeWidth={3} />
-                </span>
-                <span className="text-body-sm text-ls-text">{point}</span>
-              </li>
-            ))}
-          </motion.ul>
         </div>
 
         <HeroProductVisual />
