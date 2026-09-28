@@ -16,6 +16,7 @@ import { ConsentProvider } from "@/components/consent/ConsentProvider";
 import { CookieBanner } from "@/components/consent/CookieBanner";
 import { CookiePreferencesDialog } from "@/components/consent/CookiePreferencesDialog";
 import { AnalyticsLoader } from "@/components/consent/AnalyticsLoader";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -117,6 +118,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </ConsentProvider>
           </SmoothScroll>
         </MotionProvider>
+        <Analytics />
       </body>
     </html>
   );
