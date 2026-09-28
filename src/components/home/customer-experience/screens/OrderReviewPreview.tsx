@@ -1,10 +1,13 @@
+"use client";
+
 import { PreviewShell } from "../ui/PreviewShell";
 import {
   PreviewPrimaryButton,
   PreviewSummaryRow,
 } from "../ui/PreviewParts";
 import { Calendar, Ticket } from "@/components/ui/Icons";
-import { orderSummary, pickupSelection } from "@/data/preview-services";
+import { orderSummary, pickupSchedule } from "@/data/preview-services";
+import { useToday } from "@/lib/use-today";
 
 /**
  * Screen D - Order review.
@@ -14,6 +17,8 @@ import { orderSummary, pickupSelection } from "@/data/preview-services";
  * here would be a focusable control that assistive tech can't describe.
  */
 export function OrderReviewPreview() {
+  const schedule = pickupSchedule(useToday());
+
   return (
     <PreviewShell
       title="Review Order"
@@ -46,7 +51,7 @@ export function OrderReviewPreview() {
         <span className="flex shrink-0 items-center gap-[calc(var(--ui-gap)*0.6)] rounded-[var(--ui-r)] border border-ls-border px-[calc(var(--ui-pad)*0.45)] py-[calc(var(--ui-gap)*0.65)]">
           <Calendar className="h-[var(--ui-sm)] w-[var(--ui-sm)] shrink-0 text-ls-navy" />
           <span className="truncate text-[length:var(--ui-2xs)] font-semibold text-ls-ink">
-            {pickupSelection.summary}
+            {schedule.summary}
           </span>
         </span>
 

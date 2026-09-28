@@ -5,7 +5,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Calendar, ChevronLeft, Droplet, Sparkle } from "@/components/ui/Icons";
 import { brandInitials, customerPreviewCopy } from "@/data/brand-preview";
 import { capabilitySample } from "@/data/product-capabilities";
-import { pickupDays, pickupSelection, pickupSlots } from "@/data/preview-services";
+import { pickupSchedule, pickupSelection, pickupSlots } from "@/data/preview-services";
+import { useToday } from "@/lib/use-today";
 import { easeOut } from "@/components/motion/motion-tokens";
 import { cn } from "@/lib/utils";
 
@@ -15,7 +16,7 @@ const serviceIcons = [Droplet, Sparkle];
  * The branded customer-facing preview.
  *
  * Content comes from the same sample data as the Section 02 phone previews
- * (`capabilitySample.services`, `pickupDays` / `pickupSlots`), so this reads as
+ * (`capabilitySample.services`, `pickupSchedule` / `pickupSlots`), so this reads as
  * the customer side of the same product rather than a new flow. Every brand
  * accent resolves from the scoped --preview-brand-* properties.
  */
@@ -27,6 +28,7 @@ export function CustomerBrandPreview({
   reduceMotion: boolean;
 }) {
   const [scheduling, setScheduling] = useState(false);
+  const schedule = pickupSchedule(useToday());
 
   return (
     <div className="flex flex-col gap-4 rounded-ls-lg border border-ls-border bg-white p-4 sm:p-5">
@@ -69,11 +71,11 @@ export function CustomerBrandPreview({
 
             {/* Same illustrative slots as the Section 02 pickup preview */}
             <ul className="grid grid-cols-5 gap-1.5">
-              {pickupDays.map((day) => {
-                const selected = day.date === pickupSelection.selectedDate;
+              {schedule.days.map((day, index) => {
+                const selected = index === schedule.selectedIndex;
                 return (
                   <li
-                    key={day.date}
+                    key={index}
                     data-brand-tinted
                     className={cn(
                       "flex flex-col items-center rounded-ls-sm border py-1.5 text-caption",

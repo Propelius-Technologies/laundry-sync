@@ -3,7 +3,8 @@
 import { AnimatePresence, motion } from "motion/react";
 import { MiniPanel } from "./MiniPanel";
 import { ChevronLeft, ChevronRight, Clock } from "@/components/ui/Icons";
-import { capabilitySample } from "@/data/product-capabilities";
+import { capabilitySample, sampleCalendar } from "@/data/product-capabilities";
+import { useToday } from "@/lib/use-today";
 import { easeOut } from "@/components/motion/motion-tokens";
 import { cn } from "@/lib/utils";
 
@@ -13,8 +14,9 @@ const { calendar } = capabilitySample;
  * Card 02 - the pickup calendar pops out of the card.
  *
  * A restrained spring lifts and straightens it, the chosen date pulses once,
- * and the pickup window chip slides in underneath. The month and date are
- * fixed sample values, not a live booking system.
+ * and the pickup window chip slides in underneath. The month and dates follow
+ * the visitor's today, so the sample never goes stale; it is still an
+ * illustration, not a live booking system.
  */
 export function CalendarIllustration({
   active,
@@ -24,6 +26,7 @@ export function CalendarIllustration({
   reduceMotion: boolean;
 }) {
   const live = active && !reduceMotion;
+  const { month, days, selectedIndex } = sampleCalendar(useToday());
 
   return (
     /*
@@ -48,7 +51,7 @@ export function CalendarIllustration({
         <MiniPanel active={active} className="p-3.5">
           <div className="flex items-center justify-between">
             <span className="text-caption font-semibold text-ls-ink">
-              {calendar.month}
+              {month}
             </span>
             <span className="flex items-center gap-1 text-ls-muted">
               <ChevronLeft className="size-3" />
@@ -66,11 +69,11 @@ export function CalendarIllustration({
               </span>
             ))}
 
-            {calendar.weeks.flat().map((date) => {
-              const selected = date === calendar.selected;
+            {days.map((date, index) => {
+              const selected = index === selectedIndex;
               return (
                 <span
-                  key={date}
+                  key={index}
                   className="grid place-items-center py-0.5 text-[0.625rem]"
                 >
                   <motion.span

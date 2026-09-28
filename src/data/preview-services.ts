@@ -1,5 +1,12 @@
 import type { ComponentType, SVGProps } from "react";
 import { Bed, Droplet, Shirt, Shoe, Sparkle } from "@/components/ui/Icons";
+import {
+  BLANK,
+  addDays,
+  monthLabel,
+  shortDateLabel,
+  weekdayLabel,
+} from "@/lib/sample-dates";
 
 /**
  * Illustrative service and pricing content for the phone previews.
@@ -82,13 +89,6 @@ export const orderSummary = {
 };
 
 /** Screen C - illustrative pickup slots. */
-export const pickupDays = [
-  { day: "Mon", date: "12" },
-  { day: "Tue", date: "13" },
-  { day: "Wed", date: "14" },
-  { day: "Thu", date: "15" },
-  { day: "Fri", date: "16" },
-];
 
 export const pickupSlots = [
   "09:00 - 11:00",
@@ -98,11 +98,54 @@ export const pickupSlots = [
 ];
 
 export const pickupSelection = {
-  month: "May 2025",
-  selectedDate: "14",
   selectedSlot: "11:00 - 13:00",
-  summary: "Wed 14 May, 11:00 - 13:00",
 };
+
+/** Five days starting tomorrow, with the third one selected. */
+const PICKUP_DAY_COUNT = 5;
+const SELECTED_PICKUP_DAY = 2;
+
+export type PickupSchedule = {
+  month: string;
+  days: { day: string; date: string }[];
+  selectedIndex: number;
+  summary: string;
+};
+
+/**
+ * The pickup date strip, relative to the visitor's today so it never goes
+ * stale. `today` is null during server rendering (see useToday): the strip is
+ * then date-neutral - blank labels that hold their space - and fills in right
+ * after hydration.
+ */
+export function pickupSchedule(today: Date | null): PickupSchedule {
+  if (!today) {
+    return {
+      month: BLANK,
+      days: Array.from({ length: PICKUP_DAY_COUNT }, () => ({
+        day: BLANK,
+        date: BLANK,
+      })),
+      selectedIndex: SELECTED_PICKUP_DAY,
+      summary: pickupSelection.selectedSlot,
+    };
+  }
+
+  const dates = Array.from({ length: PICKUP_DAY_COUNT }, (_, index) =>
+    addDays(today, index + 1),
+  );
+  const selected = dates[SELECTED_PICKUP_DAY];
+
+  return {
+    month: monthLabel(selected),
+    days: dates.map((date) => ({
+      day: weekdayLabel(date),
+      date: String(date.getDate()),
+    })),
+    selectedIndex: SELECTED_PICKUP_DAY,
+    summary: `${shortDateLabel(selected)}, ${pickupSelection.selectedSlot}`,
+  };
+}
 
 /** Screen F - pricing groups, tiers and items. */
 export const pricingGroups: {

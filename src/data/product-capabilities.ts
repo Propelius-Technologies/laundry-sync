@@ -1,3 +1,5 @@
+import { BLANK, addDays, monthLabel, startOfWeek } from "@/lib/sample-dates";
+
 /**
  * Content for homepage section 03 - Product Capabilities.
  *
@@ -60,7 +62,7 @@ export const productCapabilities: ProductCapability[] = [
     tone: "sky",
     layout: "inline",
     illustrationLabel:
-      "Illustrative pickup calendar for September 2026 with one date selected and a 10:00 AM pickup window.",
+      "Illustrative pickup calendar for the current month with today selected and a 10:00 AM pickup window.",
   },
   {
     id: "order-visibility",
@@ -94,15 +96,9 @@ export const capabilitySample = {
     { name: "Wash & fold", detail: "4 items selected" },
     { name: "Dry cleaning", detail: "2 items selected" },
   ],
+  /** The month, weeks and selected day come from sampleCalendar(). */
   calendar: {
-    month: "September 2026",
     weekdays: ["M", "T", "W", "T", "F", "S", "S"],
-    /** Fixed illustrative weeks so the visual never shifts. */
-    weeks: [
-      [14, 15, 16, 17, 18, 19, 20],
-      [21, 22, 23, 24, 25, 26, 27],
-    ],
-    selected: 19,
     slot: "Pickup · 10:00 AM",
   },
   statusTrack: ["Placed", "In progress", "Completed"],
@@ -112,6 +108,35 @@ export const capabilitySample = {
     detailStatus: "Pickup scheduled",
   },
 };
+
+export type SampleCalendar = {
+  month: string;
+  /** Two weeks of day numbers, Monday first. */
+  days: string[];
+  /** Index into `days`, or -1 while no date is known. */
+  selectedIndex: number;
+};
+
+/**
+ * The capability card's calendar: this week and next, with today selected,
+ * under the current month's name. `today` is null during server rendering
+ * (see useToday), when it renders date-neutral - blank cells that hold their
+ * space - and fills in right after hydration.
+ */
+export function sampleCalendar(today: Date | null): SampleCalendar {
+  if (!today) {
+    return { month: BLANK, days: Array(14).fill(BLANK), selectedIndex: -1 };
+  }
+
+  const monday = startOfWeek(today);
+  return {
+    month: monthLabel(today),
+    days: Array.from({ length: 14 }, (_, index) =>
+      String(addDays(monday, index).getDate()),
+    ),
+    selectedIndex: (today.getDay() + 6) % 7,
+  };
+}
 
 /** Bottom CTA. The for-businesses section is not built yet; the id is reserved. */
 export const capabilitiesCta = {

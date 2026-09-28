@@ -1,19 +1,24 @@
+"use client";
+
 import { PreviewShell } from "../ui/PreviewShell";
 import { PreviewPrimaryButton } from "../ui/PreviewParts";
 import { Calendar, Clock } from "@/components/ui/Icons";
 import {
-  pickupDays,
+  pickupSchedule,
   pickupSelection,
   pickupSlots,
 } from "@/data/preview-services";
+import { useToday } from "@/lib/use-today";
 import { cn } from "@/lib/utils";
 
 /**
  * Screen C - Pickup scheduling.
  * Date strip, available time slots and the confirmed selection. Slots are
- * illustrative sample data, not live availability.
+ * illustrative sample data, not live availability. Dates run from tomorrow.
  */
 export function PickupSchedulingPreview() {
+  const schedule = pickupSchedule(useToday());
+
   return (
     <PreviewShell
       title="Schedule Pickup"
@@ -21,16 +26,16 @@ export function PickupSchedulingPreview() {
     >
       <span className="flex shrink-0 items-center gap-[calc(var(--ui-gap)*0.5)] text-[length:var(--ui-xs)] font-semibold text-ls-ink">
         <Calendar className="h-[var(--ui-sm)] w-[var(--ui-sm)] text-ls-navy" />
-        {pickupSelection.month}
+        {schedule.month}
       </span>
 
       {/* Date strip */}
       <ul className="flex shrink-0 gap-[calc(var(--ui-gap)*0.45)]">
-        {pickupDays.map((day) => {
-          const selected = day.date === pickupSelection.selectedDate;
+        {schedule.days.map((day, index) => {
+          const selected = index === schedule.selectedIndex;
           return (
             <li
-              key={day.date}
+              key={index}
               className={cn(
                 "flex flex-1 flex-col items-center gap-[1px] rounded-[var(--ui-r)] border py-[calc(var(--ui-gap)*0.6)]",
                 selected
@@ -84,7 +89,7 @@ export function PickupSchedulingPreview() {
             Pickup
           </span>
           <span className="block truncate text-[length:var(--ui-xs)] font-semibold text-ls-ink">
-            {pickupSelection.summary}
+            {schedule.summary}
           </span>
         </span>
       </div>
