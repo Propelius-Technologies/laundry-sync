@@ -169,7 +169,7 @@ export function AdminTable({
                   </dt>
                   <dd className="mt-0.5 truncate text-body-sm text-ls-ink">
                     {column.type === "thumb"
-                      ? "Catalogue artwork"
+                      ? "Catalog artwork"
                       : selected[column.key]}
                   </dd>
                 </div>

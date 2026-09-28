@@ -47,7 +47,7 @@ export const productCapabilities: ProductCapability[] = [
     category: "Customer experience",
     title: "An easy way to book.",
     description:
-      "A branded service catalogue, garment selection and order summary — available whenever customers want to arrange their next clean.",
+      "A branded service catalog, garment selection and order summary — available whenever customers want to arrange their next clean.",
     tone: "sky",
     layout: "bleed",
     illustrationLabel:

@@ -51,7 +51,7 @@ export function BrandColorSelector({
     <div
       ref={groupRef}
       role="radiogroup"
-      aria-label="Preview brand colour"
+      aria-label="Preview brand color"
       className="flex items-center gap-2.5"
     >
       {brandPresets.map((preset, index) => {

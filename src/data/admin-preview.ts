@@ -61,7 +61,7 @@ export const adminModules: AdminModule[] = [
     id: "service-categories",
     label: "Service categories",
     heading: "Service categories",
-    description: "The catalogue customers browse when they start an order.",
+    description: "The catalog customers browse when they start an order.",
     action: "Add service category",
     searchPlaceholder: "Search service categories",
     columns: [
@@ -285,7 +285,7 @@ export const businessCapabilities = [
   {
     id: "service-pricing-setup",
     title: "Service & pricing setup",
-    description: "Keep your service catalogue and pricing options organized.",
+    description: "Keep your service catalog and pricing options organized.",
   },
   {
     id: "order-route-views",
