@@ -248,11 +248,11 @@ export const adminModules: AdminModule[] = [
       { key: "status", label: "Status", type: "status", primary: true },
     ],
     rows: [
-      { id: "LS-1042", customer: "Amara Okafor", service: "Shirt Service", pickup: "14 May, 11:30 AM", status: "Pickup scheduled" },
-      { id: "LS-1041", customer: "Priya Nair", service: "Laundry Service", pickup: "14 May, 10:00 AM", status: "Ready" },
-      { id: "LS-1040", customer: "Marco Ruiz", service: "Dry Cleaning", pickup: "14 May, 2:00 PM", status: "In progress" },
-      { id: "LS-1039", customer: "Hannah Cole", service: "Shirt Service", pickup: "15 May, 9:00 AM", status: "Order placed" },
-      { id: "LS-1038", customer: "Dev Patel", service: "Laundry Service", pickup: "13 May, 4:00 PM", status: "Completed" },
+      { id: "LS-1042", customer: "Amara Okafor", service: "Shirt Service", pickup: "Today, 11:30 AM", status: "Pickup scheduled" },
+      { id: "LS-1041", customer: "Priya Nair", service: "Laundry Service", pickup: "Today, 10:00 AM", status: "Ready" },
+      { id: "LS-1040", customer: "Marco Ruiz", service: "Dry Cleaning", pickup: "Today, 2:00 PM", status: "In progress" },
+      { id: "LS-1039", customer: "Hannah Cole", service: "Shirt Service", pickup: "Tomorrow, 9:00 AM", status: "Order placed" },
+      { id: "LS-1038", customer: "Dev Patel", service: "Laundry Service", pickup: "Yesterday, 4:00 PM", status: "Completed" },
     ],
   },
   {
