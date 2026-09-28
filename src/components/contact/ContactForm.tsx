@@ -74,7 +74,7 @@ function validate(data: FormData): Errors {
 
   const email = value("email");
   if (!email) {
-    errors.email = "Please enter your work email.";
+    errors.email = "Please enter your email address.";
   } else if (!isValidEmail(email)) {
     errors.email = "Please enter a valid email address.";
   }
@@ -340,7 +340,8 @@ export function ContactForm() {
           />
           <Field
             name="email"
-            label="Work email"
+            label="Email"
+            hint="Work email preferred"
             type="email"
             autoComplete="email"
             required

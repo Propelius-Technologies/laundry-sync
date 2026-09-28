@@ -22,6 +22,8 @@ const controlClass = cn(
 type BaseProps = {
   name: string;
   label: string;
+  /** Short guidance shown under the label and read with the control. */
+  hint?: string;
   error?: string;
   required?: boolean;
   autoComplete?: string;
@@ -40,15 +42,23 @@ type FieldProps =
   | (BaseProps & { as: "textarea"; rows?: number; maxLength?: number })
   | (BaseProps & { as: "select"; options: string[] });
 
-function FieldShell({
+/** ids the control's aria-describedby should list: hint first, then error. */
+export function describedBy(name: string, hint?: string, error?: string) {
+  const ids = [hint && `${name}-hint`, error && `${name}-error`].filter(Boolean);
+  return ids.length ? ids.join(" ") : undefined;
+}
+
+export function FieldShell({
   name,
   label,
+  hint,
   error,
   required,
   children,
 }: {
   name: string;
   label: string;
+  hint?: string;
   error?: string;
   required?: boolean;
   children: ReactNode;
@@ -68,6 +78,11 @@ function FieldShell({
           </span>
         )}
       </label>
+      {hint && (
+        <p id={`${name}-hint`} className="mt-1 text-caption text-ls-muted">
+          {hint}
+        </p>
+      )}
       <div className="mt-2">{children}</div>
       {error && (
         <p id={`${name}-error`} className="mt-1.5 text-caption text-ls-error">
@@ -79,7 +94,7 @@ function FieldShell({
 }
 
 export function Field(props: FieldProps) {
-  const { name, label, error, required, disabled } = props;
+  const { name, label, hint, error, required, disabled } = props;
 
   const shared = {
     id: name,
@@ -87,12 +102,18 @@ export function Field(props: FieldProps) {
     required,
     disabled,
     "aria-invalid": error ? (true as const) : undefined,
-    "aria-describedby": error ? `${name}-error` : undefined,
+    "aria-describedby": describedBy(name, hint, error),
     className: cn(controlClass, error ? "border-ls-error" : "border-ls-border"),
   };
 
   return (
-    <FieldShell name={name} label={label} error={error} required={required}>
+    <FieldShell
+      name={name}
+      label={label}
+      hint={hint}
+      error={error}
+      required={required}
+    >
       {props.as === "textarea" ? (
         <textarea
           {...shared}
