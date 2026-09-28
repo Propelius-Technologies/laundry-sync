@@ -52,10 +52,14 @@ export function LogoMark({
           : "/brand/brand-icon-primary.png"
       }
       alt=""
-      width={1254}
-      height={1254}
+      /*
+       * The largest size it renders at, not the 1254px source. With a fixed
+       * width and no `sizes`, next/image emits only 1x/2x candidates (48w, 96w)
+       * instead of every breakpoint up to 3840w.
+       */
+      width={48}
+      height={48}
       priority={priority}
-      sizes="48px"
       className={cn("shrink-0 object-contain", className)}
     />
   );
