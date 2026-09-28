@@ -127,7 +127,7 @@ export const basketLines = [
   { label: "Wash & fold", detail: "Standard", quantity: 1 },
 ];
 
-export const pickupArea = "Shoreditch, E1";
+export const pickupArea = "Downtown";
 
 /** Customer-side progress track, matching the approved status sequence. */
 export const customerTimeline: {

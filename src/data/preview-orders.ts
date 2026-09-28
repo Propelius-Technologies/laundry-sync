@@ -65,7 +65,7 @@ export const historyOrders: PreviewHistoryOrder[] = [
     date: "8 days ago",
     time: "09:30 AM",
     total: "$18.40",
-    payment: "COD",
+    payment: "Cash on delivery",
     status: "Completed",
   },
   {
@@ -81,7 +81,7 @@ export const historyOrders: PreviewHistoryOrder[] = [
     date: "16 days ago",
     time: "10:15 AM",
     total: "$24.00",
-    payment: "COD",
+    payment: "Cash on delivery",
     status: "Completed",
   },
 ];
