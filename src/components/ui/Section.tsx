@@ -27,11 +27,12 @@ const spaceStyles: Record<SectionSpace, string> = {
   xs: "py-5 sm:py-6",
   sm: "py-12 sm:py-16",
   md: "py-16 sm:py-20 lg:py-24",
-  lg: "py-20 sm:py-24 lg:py-32",
+  lg: "py-20 sm:py-24 lg:py-24",
   /*
-   * Top padding deliberately matches the hero's (pt-10 / sm:pt-14 / lg:pt-20)
-   * so the gap below the sticky header is identical on every route. The bottom
-   * keeps the `lg` rhythm, which is what separates content from the footer.
+   * Top padding matches the hero's below lg (pt-10 / sm:pt-14), so the gap
+   * under the sticky header is the same on every route there. At lg the hero
+   * is tighter (lg:pt-12, with its copy aligned to the top) while inner pages
+   * keep lg:pt-20. The bottom separates content from the footer.
    */
   page: "pt-10 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32",
 };
