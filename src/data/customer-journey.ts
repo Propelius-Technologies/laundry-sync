@@ -109,7 +109,7 @@ export const previewDescriptions: Record<PreviewScreen, string> = {
   pickup:
     "Illustrative phone preview: picking a pickup date and an available time slot.",
   review:
-    "Illustrative phone preview: reviewing the order items, pickup slot and total before confirming.",
+    "Illustrative phone preview: reviewing the order items, pickup slot and total, followed by the order-placed confirmation.",
   status:
     "Illustrative phone preview: the customer order list showing each order's current status.",
   pricing:
