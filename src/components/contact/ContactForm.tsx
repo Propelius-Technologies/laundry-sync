@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { ArrowRight, Lock } from "@/components/ui/Icons";
 import { easeOut } from "@/components/motion/motion-tokens";
 import { DemoIntent, type ContactIntent } from "./DemoIntent";
+import { CountryCombobox, findCountry } from "./CountryCombobox";
 
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 const MESSAGE_MAX = 1000;
@@ -85,7 +86,9 @@ function validate(data: FormData): Errors {
     errors.phone = "Please enter a valid phone number, 7–15 digits.";
   }
 
-  if (!value("country")) errors.country = "Please enter your country or region.";
+  // Must be a list entry; the combobox submits the name as shown.
+  if (!findCountry(value("country")))
+    errors.country = "Please choose a country from the list.";
   if (!value("business_type"))
     errors.business_type = "Please choose a business type.";
 
@@ -131,6 +134,8 @@ export function ContactForm() {
   /* From ?intent=demo, read after mount; see DemoIntent. */
   const [intent, setIntent] = useState<ContactIntent>("general");
   const isDemo = intent === "demo";
+  /* Dialing code of the chosen country, shown only as the phone placeholder. */
+  const [dialCode, setDialCode] = useState<string | undefined>();
 
   /*
    * Set synchronously, so a second submit in the same tick - before React has
@@ -201,6 +206,10 @@ export function ContactForm() {
 
     setStatus("sending");
     setFormError(null);
+
+    // An exact alias ("UK") is accepted; always send the list's name.
+    const country = findCountry(String(data.get("country") ?? ""));
+    if (country) data.set("country", country.name);
 
     data.append("access_key", accessKey);
     data.append(
@@ -355,16 +364,17 @@ export function ContactForm() {
             inputMode="tel"
             autoComplete="tel"
             maxLength={PHONE_MAX}
+            placeholder={dialCode ? `${dialCode} …` : undefined}
             disabled={sending}
             error={errors.phone}
           />
-          <Field
+          <CountryCombobox
             name="country"
             label="Country or region"
-            autoComplete="country-name"
             required
             disabled={sending}
             error={errors.country}
+            onCountryChange={(country) => setDialCode(country?.dial)}
           />
           <Field
             name="business_type"
