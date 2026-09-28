@@ -8,6 +8,7 @@ import { Field } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight, Lock } from "@/components/ui/Icons";
 import { easeOut } from "@/components/motion/motion-tokens";
+import { DemoIntent, type ContactIntent } from "./DemoIntent";
 
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 const MESSAGE_MAX = 1000;
@@ -127,6 +128,9 @@ export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
   const [formError, setFormError] = useState<string | null>(null);
   const [messageCount, setMessageCount] = useState(0);
+  /* From ?intent=demo, read after mount; see DemoIntent. */
+  const [intent, setIntent] = useState<ContactIntent>("general");
+  const isDemo = intent === "demo";
 
   /*
    * Set synchronously, so a second submit in the same tick - before React has
@@ -199,7 +203,12 @@ export function ContactForm() {
     setFormError(null);
 
     data.append("access_key", accessKey);
-    data.append("subject", "New LaundrySync website inquiry");
+    data.append(
+      "subject",
+      isDemo
+        ? `LaundrySync demo request from ${String(data.get("business_name") ?? "").trim()}`
+        : "New LaundrySync website inquiry",
+    );
     data.append("from_name", "LaundrySync Website");
 
     try {
@@ -232,7 +241,9 @@ export function ContactForm() {
       transition={{ duration: 0.5, ease: easeOut, delay: 0.1 }}
       className="rounded-ls-xl border border-ls-border bg-white p-6 shadow-ls-card sm:p-8 lg:p-9"
     >
-      <h2 className="ls-h3">Send us a message</h2>
+      <DemoIntent onChange={setIntent} />
+
+      <h2 className="ls-h3">{isDemo ? "Request a demo" : "Send us a message"}</h2>
       <p className="ls-body-sm mt-2">
         Share a few details and we&rsquo;ll get back to you.
       </p>
@@ -289,6 +300,13 @@ export function ContactForm() {
             </ul>
           </div>
         )}
+
+        {/* Tells the team whether to schedule a demo; sent with the form. */}
+        <input
+          type="hidden"
+          name="inquiry_type"
+          value={isDemo ? "Demo request" : "General inquiry"}
+        />
 
         {/* Honeypot - hidden from view and from keyboard navigation */}
         <div aria-hidden="true" className="sr-only">
