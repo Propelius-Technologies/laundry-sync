@@ -296,3 +296,48 @@ None new. hCaptcha uses Web3Forms' public free site key, which is in source; the
    - On phones and tablets, the dry-cleaning preview has 60 px of reserved space above it, and card 04 is 20 px taller (L).
    - Service areas now show "Zone 1" to "Zone 5" (I).
 6. **Legal pages still use UK spelling** (enquiry, organisation, colour and so on), because J excluded them. Align them with US English during the legal rewrite.
+
+---
+
+# Fix log: contact form input restrictions
+
+- **Branch:** `fix/form-input-restrictions`, cut from `main` at `9a563f2` (batch 2 merged). It is not merged.
+- **Commits:** 2 plus this log. One is the feature. The other is a one-line lint fix to `Hero.tsx`: `9a563f2` commented out the hero step number but left the `.map()` callback's `index` parameter, which lint reported as unused. The commented-out markup is untouched; restoring it needs `index` added back.
+- **Scope:** input-level filtering on top of the existing validation. Submit and blur validation is unchanged, except for the new business-name rule this task asked for.
+
+## Results
+
+| Area | What changed | Files | Verification | Anything left open |
+|---|---|---|---|---|
+| Full name | Typing and paste keep only Unicode letters, combining marks, spaces, `'`, `’`, `-` and `.`; everything else is removed as it arrives. Nothing is filtered during an IME composition (`isComposing`); the filter runs once on `compositionend`. The caret stays after the same kept character. | `src/components/contact/ContactForm.tsx` | See "Name and phone filtering" below. | – |
+| Phone | Typing and paste keep only digits, spaces, `(`, `)`, `-`, and `+` as the first character. `inputMode="tel"` and `maxLength={20}` are kept. | `ContactForm.tsx` | See "Name and phone filtering" below. | A leading space before `+` ("␠+44") drops the `+`, since it is no longer the first character. |
+| Business name | Trimmed; 2–100 characters; must contain a letter or digit. Error: "Please enter your business name." No input filtering. | `ContactForm.tsx` | **Pass:** "24/7 Laundry", "Wash & Go". **Rejected:** " ", "a", 101 characters, "!!". | There is no `maxLength`; the 100-character limit is checked on submit. |
+| Blocked-character note | When the filter removes something, the field shows "Letters only" (name) or "Numbers only" (phone) for 2 s. It uses muted caption styling (not the error color), sits in an `aria-live="polite"` region that is always present, and is not linked as an error. It overlays the 20 px gap below the input, so it doesn't push the form around; if an error is showing, it joins the flow above it. | `src/components/ui/Field.tsx` (new `note` prop), `ContactForm.tsx` | Note text "Letters only" or "Numbers only"; `aria-live="polite"`; no error class; empty again after 2 s. While it shows, the email input stays at 418 px, so nothing moves. | – |
+
+### Name and phone filtering (`form.mjs`)
+
+| Case | Result |
+|---|---|
+| Type "John123" | Field shows "John"; the note appears. |
+| Paste "@@@Anne-Marie!!" | Field shows "Anne-Marie"; the note appears. |
+| Type "O'Brien" or "José" | Unchanged; no note. |
+| "राहुल" through a real IME composition (Chrome DevTools Protocol `Input.imeSetComposition` → `Input.insertText`) | `compositionstart` and `compositionend` fire. Mid-composition the field holds "रा1", so the digit is not filtered while composing. The committed value is "राहुल", with no note. |
+| Caret: "Jon", caret after "J", type "5" then "a" | "5" is removed and the caret stays at 1; "a" then gives "Jaon". |
+| Phone: type "abcd" | Empty; the note appears. |
+| Phone: paste "+91 98765-43210" | Unchanged. |
+| Phone: paste "abc123" | "123". |
+| Phone: type "12+3" | "123". |
+
+**Existing validation cases** in `form.mjs`, rechecked on the value actually sent:
+- **Name:** "John123" now sends "John", because the digits never reach the field. "@@@" filters to empty and fails with "Please enter your name.". 101 or 210 characters send 100, cut by `maxLength`; 101 characters set by script are still rejected.
+- **Phone:** "abcd" filters to empty and sends no phone; the field is optional.
+- **Everything else passes unchanged:** email, message, required fields, double submit, failure paths, honeypot, keyboard-only submit, captcha, demo intent and the country combobox.
+- No hydration warnings on any route (production build).
+
+### Quality gates
+
+| Command | Result |
+|---|---|
+| `npx tsc --noEmit` | exit 0 |
+| `npm run lint` | exit 0, **0 errors, 0 warnings** (after the `Hero.tsx` fix) |
+| `npm run build` | exit 0, no warnings, `/contact` still prerendered |
