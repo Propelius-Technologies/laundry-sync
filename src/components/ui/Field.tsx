@@ -28,6 +28,13 @@ type BaseProps = {
    * keeps every label one line, aligned with its neighbours in the grid.
    */
   hint?: string;
+  /**
+   * A passing, non-error message under the control, e.g. why a typed
+   * character did not appear. Pass "" to keep its polite live region in the
+   * DOM while empty - a region must exist before its text changes for screen
+   * readers to announce it. Leave undefined for fields that never need one.
+   */
+  note?: string;
   error?: string;
   required?: boolean;
   autoComplete?: string;
@@ -55,6 +62,7 @@ export function FieldShell({
   name,
   label,
   hint,
+  note,
   error,
   required,
   children,
@@ -62,6 +70,7 @@ export function FieldShell({
   name: string;
   label: string;
   hint?: string;
+  note?: string;
   error?: string;
   required?: boolean;
   children: ReactNode;
@@ -88,7 +97,25 @@ export function FieldShell({
           </span>
         )}
       </label>
-      <div className="mt-2">{children}</div>
+      <div className="relative mt-2">
+        {children}
+        {note !== undefined && (
+          <p
+            aria-live="polite"
+            className={cn(
+              "text-caption text-ls-muted",
+              /*
+               * Overlaid in the gap below the field, so appearing for two
+               * seconds never pushes the rest of the form around. With an
+               * error showing it joins the flow, above the error text.
+               */
+              error ? "mt-1.5" : "pointer-events-none absolute top-full left-0 mt-1",
+            )}
+          >
+            {note}
+          </p>
+        )}
+      </div>
       {error && (
         <p id={`${name}-error`} className="mt-1.5 text-caption text-ls-error">
           {error}
@@ -99,7 +126,7 @@ export function FieldShell({
 }
 
 export function Field(props: FieldProps) {
-  const { name, label, hint, error, required, disabled } = props;
+  const { name, label, hint, note, error, required, disabled } = props;
 
   const shared = {
     id: name,
@@ -116,6 +143,7 @@ export function Field(props: FieldProps) {
       name={name}
       label={label}
       hint={hint}
+      note={note}
       error={error}
       required={required}
     >

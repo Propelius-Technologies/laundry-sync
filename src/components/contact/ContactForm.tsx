@@ -58,6 +58,7 @@ if (typeof window !== "undefined") {
 }
 
 const NAME_MAX = 100;
+const BUSINESS_NAME_MAX = 100;
 const PHONE_MAX = 20;
 
 /*
@@ -69,6 +70,42 @@ const NAME_PATTERN = /^(?=.*\p{L})[\p{L}\p{M}\s'’.-]+$/u;
 
 /* Optional "+" first, then digits, spaces, brackets and hyphens only. */
 const PHONE_PATTERN = /^\+?[\d\s()-]+$/;
+
+/*
+ * Input-level filters: characters a field can never accept are removed as
+ * they are typed or pasted, on top of (not instead of) submit validation.
+ * Each works on any prefix too, so filtering the text before the caret gives
+ * the caret's new position.
+ */
+const filterName = (text: string) => text.replace(/[^\p{L}\p{M}\s'’.-]/gu, "");
+const filterPhone = (text: string) =>
+  text.replace(/[^\d\s()+-]/g, "").replace(/(?!^)\+/g, "");
+
+const inputFilters = [
+  { id: "name", filter: filterName, note: "Letters only" },
+  { id: "phone", filter: filterPhone, note: "Numbers only" },
+] as const;
+
+/** How long a "Letters only" / "Numbers only" note stays up. */
+const NOTE_MS = 2000;
+
+/**
+ * Rewrites an uncontrolled input's value through `filter`, keeping the caret
+ * after the same kept character. Returns true when anything was removed.
+ */
+function applyFilter(
+  input: HTMLInputElement,
+  filter: (text: string) => string,
+) {
+  const before = input.value;
+  const after = filter(before);
+  if (after === before) return false;
+  const caret = input.selectionStart ?? before.length;
+  const nextCaret = filter(before.slice(0, caret)).length;
+  input.value = after;
+  input.setSelectionRange(nextCaret, nextCaret);
+  return true;
+}
 
 /** E.164 allows at most 15 digits; below 7 is not a reachable number. */
 function isValidPhone(phone: string) {
@@ -114,7 +151,13 @@ function validate(data: FormData): Errors {
     errors.name = "Please enter a name using letters only.";
   }
 
-  if (!value("business_name"))
+  // Digits and symbols are fine in business names ("24/7 Laundry").
+  const businessName = value("business_name");
+  if (
+    businessName.length < 2 ||
+    businessName.length > BUSINESS_NAME_MAX ||
+    !/[\p{L}\p{N}]/u.test(businessName)
+  )
     errors.business_name = "Please enter your business name.";
 
   const email = value("email");
@@ -215,6 +258,57 @@ export function ContactForm() {
    * arrives first loads it too, and asks for the verification; see submit().
    */
   const [captchaWanted, setCaptchaWanted] = useState(false);
+
+  /* Field id -> passing note ("Letters only"), "" while there is nothing to say. */
+  const [notes, setNotes] = useState<Record<string, string>>({});
+
+  /*
+   * Block characters the name and phone fields can never accept, as they are
+   * typed or pasted, and say why for two seconds. Native listeners, because
+   * the fields are uncontrolled. Nothing is filtered mid-composition: an IME
+   * (Devanagari, Chinese, ...) builds text through intermediate states, so
+   * the filter runs once, when the composition ends.
+   */
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+    const timers = new Map<string, number>();
+    const cleanups: (() => void)[] = [];
+
+    for (const { id, filter, note } of inputFilters) {
+      const input = form.querySelector<HTMLInputElement>(`#${id}`);
+      if (!input) continue;
+
+      const run = () => {
+        if (!applyFilter(input, filter)) return;
+        setNotes((current) => ({ ...current, [id]: note }));
+        window.clearTimeout(timers.get(id));
+        timers.set(
+          id,
+          window.setTimeout(
+            () => setNotes((current) => ({ ...current, [id]: "" })),
+            NOTE_MS,
+          ),
+        );
+      };
+      const onInput = (event: Event) => {
+        if ((event as InputEvent).isComposing) return;
+        run();
+      };
+
+      input.addEventListener("input", onInput);
+      input.addEventListener("compositionend", run);
+      cleanups.push(() => {
+        input.removeEventListener("input", onInput);
+        input.removeEventListener("compositionend", run);
+      });
+    }
+
+    return () => {
+      cleanups.forEach((cleanup) => cleanup());
+      timers.forEach((timer) => window.clearTimeout(timer));
+    };
+  }, []);
 
   useEffect(() => {
     const name = pendingFocusRef.current;
@@ -438,6 +532,7 @@ export function ContactForm() {
             maxLength={NAME_MAX}
             required
             disabled={sending}
+            note={notes.name ?? ""}
             error={errors.name}
           />
           <Field
@@ -467,6 +562,7 @@ export function ContactForm() {
             maxLength={PHONE_MAX}
             placeholder={dialCode ? `${dialCode} …` : undefined}
             disabled={sending}
+            note={notes.phone ?? ""}
             error={errors.phone}
           />
           <CountryCombobox
