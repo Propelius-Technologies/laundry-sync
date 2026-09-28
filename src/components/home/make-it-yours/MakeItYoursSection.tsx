@@ -60,6 +60,7 @@ export function MakeItYoursSection() {
             <motion.span {...reveal(0.08, 18)} className="ls-animate block">
               Your business.
             </motion.span>
+            {" "}
             <motion.span
               {...reveal(0.16, 18)}
               className="ls-animate block text-ls-muted"

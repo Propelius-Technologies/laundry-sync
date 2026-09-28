@@ -43,6 +43,7 @@ export function CustomerExperienceSection() {
           className="ls-animate ls-statement mt-6"
         >
           <span className="block">From first tap</span>
+          {" "}
           <span className="text-ls-muted">to fresh delivery.</span>
         </motion.h2>
 

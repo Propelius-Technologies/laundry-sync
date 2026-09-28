@@ -88,13 +88,16 @@ export function OpportunitySection() {
               className="ls-animate block"
             >
               <span className="block">Your service is</span>
+              {" "}
               <span className="block">personal.</span>
             </motion.span>
+            {" "}
             <motion.span
               {...reveal(0.18, 20)}
               className="ls-animate block text-ls-muted"
             >
               <span className="block">Your ordering should</span>
+              {" "}
               <span className="block">be, too.</span>
             </motion.span>
           </h2>

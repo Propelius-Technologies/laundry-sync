@@ -43,9 +43,11 @@ export function FAQSection() {
             <motion.span {...reveal(0.08, 18)} className="ls-animate block">
               A few things
             </motion.span>
+            {" "}
             <motion.span {...reveal(0.14, 18)} className="ls-animate block">
               you might be
             </motion.span>
+            {" "}
             <motion.span
               {...reveal(0.2, 18)}
               className="ls-animate block text-ls-muted"

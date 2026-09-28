@@ -38,6 +38,7 @@ export default function ThankYouPage() {
 
         <h1 className="ls-statement mt-6">
           <span className="block">Thank you.</span>
+          {" "}
           <span className="block">
             Your message is <span className="text-ls-blue">in good hands.</span>
           </span>

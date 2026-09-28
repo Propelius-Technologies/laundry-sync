@@ -161,8 +161,10 @@ export function CustomerBrandPreview({
                 {customerPreviewCopy.welcomeLabel}
               </span>
               <p className="mt-2 text-lg leading-tight font-bold tracking-[-0.02em] text-ls-ink sm:text-xl">
-                {customerPreviewCopy.welcomeHeading.map((line) => (
+                {customerPreviewCopy.welcomeHeading.map((line, index) => (
                   <span key={line} className="block">
+                    {/* Collapses visually at the line start; keeps words apart in the text. */}
+                    {index > 0 && " "}
                     {line}
                   </span>
                 ))}

@@ -37,6 +37,7 @@ export function WhoItsForSection() {
           <motion.span {...reveal(0.08, 18)} className="ls-animate block">
             For the laundry businesses
           </motion.span>
+          {" "}
           <motion.span {...reveal(0.16, 18)} className="ls-animate block">
             that want to <span className="text-ls-muted">move forward.</span>
           </motion.span>

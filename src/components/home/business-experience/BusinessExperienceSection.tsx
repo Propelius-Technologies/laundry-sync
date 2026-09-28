@@ -43,6 +43,7 @@ export function BusinessExperienceSection() {
             <motion.span {...reveal(0.08, 18)} className="ls-animate block">
               A smoother experience
             </motion.span>
+            {" "}
             <motion.span {...reveal(0.16, 18)} className="ls-animate block">
               for the people <span className="text-ls-aqua">running it.</span>
             </motion.span>

@@ -41,6 +41,7 @@ export function Hero() {
 
           <motion.h1 {...enter(heroSequence.heading)} className="ls-animate ls-display mt-6 max-lg:text-[clamp(2rem,5vw,3.25rem)]">
             <span className="block">Your laundry business.</span>
+            {" "}
             <span className="ls-text-gradient block">
               <span className="block">Beautifully online</span>
             </span>

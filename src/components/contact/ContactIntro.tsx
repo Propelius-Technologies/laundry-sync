@@ -34,6 +34,7 @@ export function ContactIntro() {
 
       <motion.h1 {...enter(0.07)} className="ls-statement mt-6">
         <span className="block">Let&rsquo;s talk about your</span>
+        {" "}
         <span className="block">
           laundry <span className="text-ls-blue">business.</span>
         </span>
