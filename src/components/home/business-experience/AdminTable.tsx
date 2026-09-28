@@ -75,7 +75,9 @@ export function AdminTable({
 
   return (
     <div className="flex flex-col">
-      <div className="overflow-x-auto overscroll-x-contain">
+      {/* relative: contains the absolutely positioned sr-only header label,
+          which otherwise escapes this scroller and widens the page. */}
+      <div className="relative overflow-x-auto overscroll-x-contain">
         <table className="w-full min-w-full border-collapse text-left">
           <thead>
             <tr className="border-b border-ls-border">
