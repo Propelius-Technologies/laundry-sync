@@ -81,18 +81,35 @@ export function ContactForm() {
   const [formError, setFormError] = useState<string | null>(null);
   const [messageCount, setMessageCount] = useState(0);
 
+  /*
+   * Set synchronously, so a second submit in the same tick - before React has
+   * re-rendered with `sending` - is still refused. State alone can't do that.
+   */
+  const submittingRef = useRef(false);
+
   const sending = status === "sending";
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     // Guards against a double-click firing a second request.
-    if (sending) return;
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+    let navigating = false;
 
-    const form = event.currentTarget;
+    try {
+      navigating = await submit(event.currentTarget);
+    } finally {
+      // Stays set through the redirect so nothing can resubmit meanwhile.
+      if (!navigating) submittingRef.current = false;
+    }
+  }
+
+  /** Returns true once the redirect to /thank-you has started. */
+  async function submit(form: HTMLFormElement): Promise<boolean> {
     const data = new FormData(form);
 
     // Web3Forms honeypot: a real visitor never fills this.
-    if (String(data.get("botcheck") ?? "")) return;
+    if (String(data.get("botcheck") ?? "")) return false;
 
     const nextErrors = validate(data);
     setErrors(nextErrors);
@@ -101,7 +118,7 @@ export function ContactForm() {
       setFormError(null);
       const firstInvalid = Object.keys(nextErrors)[0];
       form.querySelector<HTMLElement>(`[name="${firstInvalid}"]`)?.focus();
-      return;
+      return false;
     }
 
     const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
@@ -110,7 +127,7 @@ export function ContactForm() {
         "The contact form isn't available right now. Please try again shortly.",
       );
       setStatus("error");
-      return;
+      return false;
     }
 
     setStatus("sending");
@@ -130,7 +147,7 @@ export function ContactForm() {
       // Both must hold - an HTTP 200 alone does not mean it was accepted.
       if (response.ok && result?.success === true) {
         router.push("/thank-you");
-        return; // stay disabled through the navigation
+        return true; // stay disabled through the navigation
       }
 
       throw new Error("Submission rejected");
@@ -139,6 +156,7 @@ export function ContactForm() {
         "Something went wrong sending your message. Please check your connection and try again.",
       );
       setStatus("error");
+      return false;
     }
   }
 
