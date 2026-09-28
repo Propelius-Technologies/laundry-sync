@@ -104,9 +104,9 @@ export function Hero() {
                 </span>
                 <span className="min-w-0">
                   <span className="block text-body-sm font-semibold text-ls-ink">
-                    <span className="mr-2 text-caption tracking-[0.08em] text-ls-muted">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+                    {/* <span className="mr-2 text-caption tracking-[0.08em] text-ls-muted">
+                      {String(index + 1).padStart(2, "0")})
+                    </span> */}
                     {title}
                   </span>
                   <span className="mt-0.5 block text-body-sm text-ls-text">
