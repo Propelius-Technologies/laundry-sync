@@ -41,6 +41,21 @@
     scroll-margin-top: 6rem;
   }
 
+  /*
+   * Tailwind v4's preflight leaves buttons on the default arrow. Real
+   * controls get the pointer; the inert mockup spans deliberately do not, so
+   * the pointer stays a reliable "this does something" cue. In the base layer,
+   * so utilities such as disabled:cursor-not-allowed still win.
+   */
+  button:not(:disabled),
+  [role="tab"],
+  summary,
+  label[for],
+  select,
+  a[href] {
+    cursor: pointer;
+  }
+
   strong {
     font-weight: var(--font-weight-semibold);
     color: var(--color-text-heading);
