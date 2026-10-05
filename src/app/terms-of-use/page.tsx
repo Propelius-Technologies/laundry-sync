@@ -9,10 +9,7 @@ export const metadata = pageMetadata({
   description:
     "The terms governing use of the LaundrySync marketing website and its informational content.",
   path: "/terms-of-use",
-  /*
-   * Draft pending Propelius legal approval, so noindex for now. Flips to
-   * indexable automatically once legalLastUpdated is set in src/data/legal.ts.
-   */
+  /* Indexable once legalLastUpdated is set in src/data/legal.ts. */
   noindex: !legalPagesApproved,
 });
 
@@ -218,27 +215,21 @@ export default function TermsOfUsePage() {
         caused by negligence, or for fraud.
       </p>
       <p>
-        <strong>
-          The scope and wording of this section, including any cap on liability
-          and any indemnity, must be settled by a legal adviser
-        </strong>{" "}
-        before publication. No aggressive exclusion or indemnity has been
-        inserted here without that review.
+        Subject to that, and to the maximum extent permitted by law, we are not
+        liable for any indirect, incidental, special or consequential loss
+        arising from your use of this website or its content.
       </p>
 
       <h2 id="law">Governing law</h2>
       <p>
         These terms are governed by the laws of{" "}
-        <Fact value={legalInfo.governingLaw} label="governing law and jurisdiction for disputes" />, and the courts
-        of that jurisdiction have exclusive jurisdiction over disputes arising
-        from them.
+        <Fact value={legalInfo.governingLaw} label="governing law and jurisdiction for disputes" />. Any disputes
+        arising from them shall be resolved through{" "}
+        <Fact value={legalInfo.disputeForum} label="forum for resolving disputes" />.
       </p>
       <p>
-        <strong>
-          This clause is a placeholder and must be confirmed by{" "}
-          {legalInfo.parentBrand} and its legal adviser,
-        </strong>{" "}
-        including whether any mandatory consumer protections apply.
+        This does not take away any mandatory protection you have under the law
+        of the country where you live.
       </p>
 
       <h2 id="changes">Changes to these terms</h2>

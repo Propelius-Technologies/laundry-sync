@@ -10,10 +10,7 @@ export const metadata = pageMetadata({
   description:
     "Cookies and similar technologies used on the LaundrySync website, and how to manage your preferences.",
   path: "/cookie-policy",
-  /*
-   * Draft pending Propelius legal approval, so noindex for now. Flips to
-   * indexable automatically once legalLastUpdated is set in src/data/legal.ts.
-   */
+  /* Indexable once legalLastUpdated is set in src/data/legal.ts. */
   noindex: !legalPagesApproved,
 });
 
@@ -178,8 +175,9 @@ export default function CookiePolicyPage() {
       <p>
         Our hosting provider may also process server logs in order to serve and
         protect the website. These are not set through your browser by this
-        site; the details are{" "}
-        <Fact value={legalInfo.hostingLogRetention} label="hosting provider log retention" />.
+        site, and are kept by{" "}
+        <Fact value={legalInfo.hostingProvider} label="hosting provider" /> under its own privacy policy and
+        retention schedule.
       </p>
 
       <h2 id="controls">Your choices</h2>

@@ -7,7 +7,7 @@ import { absoluteUrl, legalPagesApproved } from "@/lib/site-config";
  * Lists only indexable public pages. Deliberately excluded:
  *
  * - /thank-you        - noindex; a confirmation page has no search value.
- * - the legal pages   - only while they are unapproved drafts. See
+ * - the legal pages   - only while they have no effective date. See
  *                       legalPagesApproved in src/lib/site-config.ts.
  * - the 404 page      - not a real route, and returns a 404 status.
  * - homepage anchors  - /#features, /#faq and friends are sections OF the

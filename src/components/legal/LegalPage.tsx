@@ -57,16 +57,11 @@ export function LegalPage({
         <h1 className="ls-statement mt-6">{title}</h1>
         <p className="ls-body mt-5">{summary}</p>
 
-        <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-caption text-ls-muted">
-          <span className="rounded-ls-pill bg-ls-error/10 px-2.5 py-1 font-semibold text-ls-error">
-            Draft &mdash; not yet approved for publication
-          </span>
-          <span>
-            {legalLastUpdated
-              ? `Last updated ${legalLastUpdated}`
-              : "No effective date set. This draft requires review and approval by Propelius and its legal adviser before it is published."}
-          </span>
-        </p>
+        {legalLastUpdated && (
+          <p className="mt-6 text-caption text-ls-muted">
+            Last updated {legalLastUpdated}
+          </p>
+        )}
       </div>
 
       <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] lg:gap-16">

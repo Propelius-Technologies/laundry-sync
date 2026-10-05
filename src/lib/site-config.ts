@@ -83,16 +83,9 @@ export const allowIndexing = process.env.NEXT_PUBLIC_ALLOW_INDEXING !== "false";
 /**
  * Whether the three legal policies may be indexed.
  *
- * They are still drafts: they render a visible "Draft - not yet approved for
- * publication" badge and `[To confirm: ...]` markers, and every business fact
- * in src/data/legal.ts is null. Letting Google index that would publish
- * unapproved legal content, so they are noindex and stay out of sitemap.xml
- * until approval.
- *
  * The signal is `legalLastUpdated`, which doubles as the effective date the
- * pages display. Setting it to a real date - the last step of the publication
- * checklist in docs/LEGAL_LAUNCH_CHECKLIST.md - makes all three pages
- * indexable and adds them to the sitemap with no other code change.
+ * pages display. While it is null the pages are noindex and left out of
+ * sitemap.xml; once it is set, all three are indexable and listed.
  */
 export const legalPagesApproved = legalLastUpdated !== null;
 

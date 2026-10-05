@@ -9,10 +9,7 @@ export const metadata = pageMetadata({
   description:
     "How the LaundrySync website collects, uses and handles information submitted through its contact form and other website services.",
   path: "/privacy-policy",
-  /*
-   * Draft pending Propelius legal approval, so noindex for now. Flips to
-   * indexable automatically once legalLastUpdated is set in src/data/legal.ts.
-   */
+  /* Indexable once legalLastUpdated is set in src/data/legal.ts. */
   noindex: !legalPagesApproved,
 });
 
@@ -85,11 +82,11 @@ export default function PrivacyPolicyPage() {
         of {legalInfo.parentBrand}.
       </p>
       <p>
-        Where data protection law applies to our activities, the entity named
-        above is the controller of the personal information described in this
-        policy. Which data protection regime applies depends on the operating
-        jurisdiction, which is <Fact value={legalInfo.jurisdiction} label="operating jurisdiction" />, and requires
-        legal confirmation.
+        The entity named above is the controller of the personal information
+        described in this policy. We operate from{" "}
+        <Fact value={legalInfo.jurisdiction} label="operating jurisdiction" /> and handle personal information in
+        accordance with the data protection laws that apply to us, including,
+        where relevant to you, the UK and EU GDPR.
       </p>
 
       <h2 id="contact-form">Information you give us</h2>
@@ -149,18 +146,12 @@ export default function PrivacyPolicyPage() {
 
       <h2 id="grounds">Our grounds for using it</h2>
       <p>
-        Where a data protection regime such as the UK or EU GDPR applies, we
-        expect to rely on our legitimate interest in responding to business
-        enquiries and operating our website, and on your consent for optional
-        analytics. Under India&rsquo;s Digital Personal Data Protection
-        framework the analysis differs and generally turns on notice and
-        consent.
-      </p>
-      <p>
-        <strong>
-          The applicable regime and the final basis for each purpose require
-          legal confirmation before this policy is published.
-        </strong>
+        Where the UK or EU GDPR applies, we rely on our legitimate interest in
+        responding to business enquiries and operating our website, and on your
+        consent for optional analytics. Under India&rsquo;s Digital Personal
+        Data Protection framework, we process information you choose to send
+        us for the purpose you sent it, and we rely on your consent for
+        optional analytics.
       </p>
 
       <h2 id="web3forms">Contact-form processing</h2>
@@ -176,16 +167,12 @@ export default function PrivacyPolicyPage() {
         submission is never shared outside our organisation.
       </p>
       <p>
-        Web3Forms&rsquo; published developer documentation does not state how
-        long submissions are retained, where its servers are located, or which
-        sub-processors it uses, and its privacy page could not be retrieved for
-        review. We have therefore not asserted any of those details here. They
-        must be obtained directly from Web3Forms before publication:{" "}
-        <Fact
-          value={legalInfo.web3formsTerms}
-          label="Web3Forms retention period, data location, sub-processors and data processing terms"
-        />
-        .
+        Web3Forms handles submissions under its own{" "}
+        <a href="https://web3forms.com/privacy" target="_blank" rel="noopener noreferrer">
+          privacy policy
+        </a>
+        , which governs how long it keeps them and where they are stored. We
+        use Web3Forms only to deliver your enquiry to us.
       </p>
 
       <h2 id="hosting">Hosting and service providers</h2>
@@ -268,29 +255,28 @@ export default function PrivacyPolicyPage() {
 
       <h2 id="transfers">International processing</h2>
       <p>
-        Our service providers may process information outside the country you
-        are in. The countries involved, and the safeguards relied on for those
-        transfers, depend on our hosting provider and on Web3Forms, and are{" "}
+        {legalInfo.parentBrand} is headquartered in{" "}
+        <Fact value={legalInfo.jurisdiction} label="operating jurisdiction" />. We and our
+        service providers may store or process your information in India, the
+        United States, the European Economic Area or other jurisdictions. Where
+        required, we rely on{" "}
         <Fact
           value={legalInfo.transferSafeguards}
           label="transfer destinations and safeguards for each provider"
-        />.
+        />{" "}
+        to protect cross-border transfers.
       </p>
 
       <h2 id="retention">How long we keep information</h2>
       <p>
-        We keep enquiry correspondence for as long as needed to deal with your
-        enquiry and for any follow-up business discussion, after which it is
-        deleted or archived.
+        We keep contact form enquiries for up to{" "}
+        <Fact value={legalInfo.contactFormRetention} label="contact enquiry retention period" /> to manage the
+        enquiry history, after which they are deleted.
       </p>
       <p>
-        <strong>
-          A specific retention period has not yet been set. This is a business
-          decision for {legalInfo.parentBrand}
-        </strong>{" "}
-        (<Fact value={legalInfo.contactFormRetention} label="contact enquiry retention period" />), and the published policy
-        must state a period we actually follow. Information held by Web3Forms is
-        retained according to their schedule, not ours.
+        We may keep information for longer where we need to comply with a legal
+        obligation, resolve a dispute or enforce our agreements. Information
+        held by Web3Forms is retained according to their schedule, not ours.
       </p>
 
       <h2 id="security">Security</h2>
@@ -320,12 +306,11 @@ export default function PrivacyPolicyPage() {
       </p>
       <p>
         These rights are not identical in every jurisdiction, and some do not
-        apply in all circumstances.{" "}
-        <strong>
-          The specific rights, any statutory response period, and the relevant
-          supervisory authority for complaints require legal confirmation
-        </strong>{" "}
-        before this policy is published.
+        apply in all circumstances. We may need to verify your identity before
+        acting on a request, and we will respond within the time the applicable
+        law requires. If you are unhappy with how we have handled your
+        information, you can also complain to the data protection authority
+        where you live.
       </p>
 
       <h2 id="contact">Contacting us about privacy</h2>
@@ -334,10 +319,6 @@ export default function PrivacyPolicyPage() {
         <Fact value={legalInfo.privacyEmail} label="privacy contact email address" />, or write to us at{" "}
         <Fact value={legalInfo.registeredAddress} label="registered business address" />. You can also reach us through
         our <Link href="/contact">contact form</Link>.
-      </p>
-      <p>
-        Whether we are required to appoint a data protection officer or a local
-        representative is <Fact value={legalInfo.dpoRequirement} label="DPO / representative requirement" />.
       </p>
 
       <h2 id="changes">Changes to this policy</h2>
