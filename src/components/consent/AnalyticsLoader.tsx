@@ -1,11 +1,13 @@
 "use client";
 
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import { useConsent } from "./ConsentProvider";
 import {
   analyticsConfig,
   analyticsConfigured,
   analyticsEnabled,
+  vercelAnalyticsEnabled,
 } from "@/lib/consent/consent-config";
 import { MicrosoftClarity } from "@/components/analytics/MicrosoftClarity";
 
@@ -19,8 +21,8 @@ import { MicrosoftClarity } from "@/components/analytics/MicrosoftClarity";
  *
  * Two conditions must both hold: the visitor opted in, and this build is
  * allowed to report (`analyticsEnabled` - production, or an explicit opt-in).
- * The same gate covers Clarity and GA4. GA4 has no measurement ID yet, so
- * nothing Google loads either way.
+ * The same gate covers Clarity, Vercel Web Analytics and GA4. GA4 has no
+ * measurement ID yet, so nothing Google loads either way.
  *
  * Rendering is keyed off `status === "decided"`, and next/script dedupes by
  * id, so neither provider can be injected twice. This component is mounted
@@ -64,6 +66,9 @@ export function AnalyticsLoader() {
       )}
 
       {clarityProjectId && <MicrosoftClarity />}
+
+      {/* Cookieless; served and collected first party under /_vercel/insights. */}
+      {vercelAnalyticsEnabled && <Analytics />}
     </>
   );
 }
