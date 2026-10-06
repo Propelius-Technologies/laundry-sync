@@ -63,7 +63,7 @@ export const legalInfo = {
  * the pages indexable and adds them to the sitemap (see legalPagesApproved in
  * src/lib/site-config.ts).
  */
-export const legalLastUpdated: LegalFact = "5 October 2026";
+export const legalLastUpdated: LegalFact = "6 October 2026";
 
 /** Third parties the website actually contacts, verified by code audit. */
 export const verifiedProcessors = [
@@ -73,6 +73,13 @@ export const verifiedProcessors = [
     when: "Only after you opt in to optional analytics",
     detail:
       "Measures how visitors use this website, including aggregated interaction data and session recordings, to find usability problems. Provided by Microsoft. The contact form is masked, so what you type into it is not captured.",
+  },
+  {
+    name: "Vercel Web Analytics",
+    role: "Optional, cookieless page-view analytics",
+    when: "Only after you opt in to optional analytics",
+    detail:
+      "Counts page views, referring sites, and device and browser types in aggregate, without cookies and without identifying individual visitors. Provided by Vercel Inc., our hosting provider.",
   },
   {
     name: "Web3Forms",

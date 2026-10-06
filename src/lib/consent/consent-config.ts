@@ -7,12 +7,15 @@ import type { ConsentCategories } from "./consent-types";
  * self-hosted by next/font, so no request reaches Google Fonts at runtime.
  * Web3Forms is contacted only when a visitor submits the contact form.
  *
- * Microsoft Clarity is the one analytics tool configured, and it is loaded
- * only after a visitor opts in.
+ * Microsoft Clarity and Vercel Web Analytics are the analytics tools
+ * configured, and both load only after a visitor opts in.
  */
 
-/** Raise this when tracking purposes materially change. */
-export const CONSENT_VERSION = 1;
+/**
+ * Raise this when tracking purposes materially change.
+ * 2: Vercel Web Analytics added alongside Clarity, so earlier choices re-ask.
+ */
+export const CONSENT_VERSION = 2;
 
 export const CONSENT_STORAGE_KEY = "ls-consent";
 
@@ -59,8 +62,17 @@ export const analyticsConfig = {
     : null,
 } as const;
 
+/**
+ * Vercel Web Analytics needs no ID - Vercel wires it to the project the site
+ * is deployed in - so it is on wherever this build may report at all. It
+ * reports nothing until Web Analytics is enabled in the Vercel dashboard.
+ */
+export const vercelAnalyticsEnabled = analyticsEnabled;
+
 export const analyticsConfigured = Boolean(
-  analyticsConfig.ga4MeasurementId || analyticsConfig.clarityProjectId,
+  analyticsConfig.ga4MeasurementId ||
+    analyticsConfig.clarityProjectId ||
+    vercelAnalyticsEnabled,
 );
 
 /**

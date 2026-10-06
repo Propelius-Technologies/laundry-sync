@@ -56,7 +56,8 @@ export default function CookiePolicyPage() {
         </strong>{" "}
         If you do, Microsoft Clarity is loaded and sets the cookies listed in
         the{" "}
-        <Link href="#inventory">storage inventory</Link> below. If you decline,
+        <Link href="#inventory">storage inventory</Link> below, and Vercel Web
+        Analytics is loaded, which sets no cookies. If you decline,
         or have not answered yet, no analytics script is requested at all.
         There is no tag manager and no advertising script on any page.
       </p>
@@ -91,12 +92,19 @@ export default function CookiePolicyPage() {
         cookies on Microsoft&rsquo;s own domains.
       </p>
       <p>
+        We also use <strong>Vercel Web Analytics</strong>, provided by our
+        hosting provider Vercel, to count page views and see which pages are
+        visited. It sets no cookies, stores nothing in your browser and does not
+        identify individual visitors.
+      </p>
+      <p>
         <strong>
-          Clarity loads only after you opt in to optional analytics.
+          Clarity and Vercel Web Analytics load only after you opt in to
+          optional analytics.
         </strong>{" "}
-        Until you accept, the script is never requested &mdash; not on your
-        first visit, and not if you decline. It is not loaded and then
-        suppressed; it is simply not there.
+        Until you accept, neither script is requested &mdash; not on your
+        first visit, and not if you decline. Neither is loaded and then
+        suppressed; they are simply not there.
       </p>
       <p>
         <strong>The contact form is masked.</strong> What you type into it

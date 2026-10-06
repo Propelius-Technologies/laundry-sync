@@ -156,8 +156,9 @@ export function CookiePreferencesDialog() {
                 can see what they are agreeing to before they agree to it.
               */}
               When enabled, <strong>Microsoft Clarity</strong> measures how
-              visitors use this website, including session recordings, so we
-              can find usability problems. The contact form is masked, and we
+              visitors use this website, including session recordings, and{" "}
+              <strong>Vercel Web Analytics</strong> counts page views without
+              cookies, so we can find usability problems. The contact form is masked, and we
               never send your contact-form details to analytics.
               {!analyticsConfigured && (
                 <>

@@ -1,4 +1,5 @@
 import { siteConfig, siteOrigin, absoluteUrl } from "@/lib/site-config";
+import { legalInfo } from "@/data/legal";
 
 /**
  * Site-wide structured data.
@@ -9,11 +10,12 @@ import { siteConfig, siteOrigin, absoluteUrl } from "@/lib/site-config";
  *
  * Intentionally NOT included, and why:
  *
- * - `Organization` postal address, telephone, legalName, foundingDate,
- *   `sameAs` social profiles, VAT/registration numbers. None of these are
- *   confirmed - every business fact in src/data/legal.ts is still null, and
+ * - `Organization` telephone, foundingDate, `sameAs` social profiles,
+ *   VAT/registration numbers. None of these are stated on the site, and
  *   LaundrySync maintains no social profiles. Inventing them would put false
- *   claims into machine-readable markup.
+ *   claims into machine-readable markup. legalName, address and email ARE
+ *   included: they come from src/data/legal.ts, the same values the legal
+ *   pages display.
  *
  * - `SoftwareApplication`. Google's software rich result needs `offers` (a
  *   price) or `aggregateRating` to be eligible. LaundrySync publishes no
@@ -35,11 +37,11 @@ export function JsonLd() {
       {
         "@type": "Organization",
         "@id": organizationId,
-        /*
-         * The trading name shown on the site. The registered legal entity is
-         * still unconfirmed, so `legalName` is omitted rather than guessed.
-         */
+        /* The trading name shown on the site; the legal name as the policies state it. */
         name: siteConfig.parentBrand,
+        ...(legalInfo.legalEntityName && { legalName: legalInfo.legalEntityName }),
+        ...(legalInfo.registeredAddress && { address: legalInfo.registeredAddress }),
+        ...(legalInfo.generalEmail && { email: legalInfo.generalEmail }),
         url: absoluteUrl("/"),
         logo: {
           "@type": "ImageObject",

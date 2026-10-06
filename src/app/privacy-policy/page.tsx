@@ -205,11 +205,17 @@ export default function PrivacyPolicyPage() {
         and mouse movement, and can replay a visit as a session recording.
       </p>
       <p>
+        We also use <strong>Vercel Web Analytics</strong>, provided by our
+        hosting provider, to count page views and see which pages are visited,
+        from which referring sites, and on which kinds of device and browser.
+        It sets no cookies and does not identify individual visitors.
+      </p>
+      <p>
         <strong>
-          Clarity runs only if you opt in to optional analytics.
+          Both tools run only if you opt in to optional analytics.
         </strong>{" "}
-        Until then no Clarity script is requested and no Clarity cookie is set.
-        Declining, or simply not answering, means it never loads. You can
+        Until then neither script is requested and no analytics cookie is set.
+        Declining, or simply not answering, means neither loads. You can
         withdraw at any time through the Cookie preferences panel, linked in the
         footer and described in our{" "}
         <Link href="/cookie-policy">Cookie Policy</Link>.
