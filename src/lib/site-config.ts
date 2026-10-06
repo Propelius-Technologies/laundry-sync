@@ -11,14 +11,10 @@ import { legalLastUpdated } from "@/data/legal";
 /**
  * The production origin to fall back on when nothing else identifies the host.
  *
- * IMPORTANT - this is NOT yet confirmed, and as of the last check
- * laundry-sync.com does not resolve at all (DNS failure). It is the domain
- * named in the Phase 16 brief, treated as intended rather than verified.
- * See docs/SEO_IMPLEMENTATION.md.
- *
- * Note the hyphen: laundry-sync.com, NOT laundrysync.com.
+ * laundrysync.app is the confirmed production domain (no hyphen, .app TLD).
+ * It already resolves to Vercel. See docs/SEO_IMPLEMENTATION.md.
  */
-const FALLBACK_ORIGIN = "https://laundry-sync.com";
+const FALLBACK_ORIGIN = "https://laundrysync.app";
 
 /**
  * Resolves the origin every absolute URL on the site is built from.
@@ -41,11 +37,10 @@ const FALLBACK_ORIGIN = "https://laundry-sync.com";
  *    share card still points at real production assets rather than at a
  *    throwaway deployment URL.
  *
- *    This self-corrects. Today the project has no custom domain, so it returns
- *    laundry-sync.vercel.app. The moment laundry-sync.com is attached to the
- *    Vercel project, the same variable returns laundry-sync.com and every
- *    canonical, sitemap entry, JSON-LD URL and share image follows - with no
- *    code change and no redeploy beyond the next build.
+ *    With no custom domain attached it returns laundry-sync.vercel.app. Once
+ *    laundrysync.app is attached to the Vercel project, the same variable
+ *    returns laundrysync.app and every canonical, sitemap entry, JSON-LD URL
+ *    and share image follows on the next build, with no code change.
  *
  *    Requires "Enable access to System Environment Variables" in the Vercel
  *    project settings, which is on by default.
